@@ -1,0 +1,469 @@
+{% extends "legal_base.html" %}
+
+{% block body_class %}legal-page guide-page{% endblock %}
+
+{% block extra_head %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Mining & Trades Jobs in the USA and Canada: The Complete Guide",
+  "description": {{ seo_description | tojson }},
+  "author": {
+    "@type": "Organization",
+    "name": "Welcome to Trades"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Welcome to Trades",
+    "logo": {
+      "@type": "ImageObject",
+      "url": {{ (seo_og_image|replace('/og-image.jpg', '/logo.png')|replace('/og-image.png', '/logo.png')) | tojson }}
+    }
+  },
+  "datePublished": "2026-06-20",
+  "dateModified": "2026-06-20",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": {{ seo_canonical | tojson }}
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What types of mining and trades jobs does Welcome to Trades list?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "We focus on on-site roles: haul truck and heavy equipment operators, underground miners, mill and plant operators, drillers, blasters, mechanics, millwrights, electricians, welders, pipefitters, laborers, safety techs, geologists, and related site jobs across the USA and Canada."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Are these remote or work-from-home jobs?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Welcome to Trades is built for on-site mine, plant, and construction work — including camp and FIFO-style roles where listed. These are hands-on jobs at job sites, not desk or remote roles."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which locations are covered?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The United States and Canada. Use the city filter to narrow results to mining towns like Timmins, Sudbury, Elko, Red Lake, and other active regions when those cities appear in listings."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is Welcome to Trades free?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes for launch — browse and search listings free at welcometotrades.com/search. Paid plans may be offered later for premium features."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I find mining jobs that hire in Canada or the USA?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Use Welcome to Trades to search by role, category, or city. Filter for operators, underground, mill and plant, trades, labor, or safety and geology. Verify each posting before applying — mining hiring moves fast."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do I need certifications for mining and trades jobs?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Many roles require tickets, licenses, or safety training — Common Core in Ontario, MSHA in the US, Red Seal trades, WHMIS, first aid, and employer-specific site orientations. Read each posting and confirm requirements with the hiring company."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Are mining and trades jobs well paid?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Compensation varies by role, experience, location, and shift structure. Underground miners, haul truck operators, millwrights, and electricians often earn strong wages, especially with camp or FIFO premiums. Always confirm pay and benefits directly with the employer."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is FIFO or camp work?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Fly-in fly-out (FIFO) or camp-based roles require you to work at a remote site for a set rotation — for example 14 days on and 14 days off — with employer-provided camp accommodation. These are common in northern Canada and remote US mining districts."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How often are job listings updated?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Listings are refreshed regularly from public job boards and company career pages for mining and trades roles across the US and Canada."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Where can I follow hiring tips and site updates?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Follow @rigtimmins on TikTok for mining and trades content, then use welcometotrades.com to search open on-site roles."
+      }
+    }
+  ]
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<h1>Mining &amp; Trades Jobs in the USA and Canada: The Complete Guide</h1>
+<p class="legal-meta">Updated June 2026 · 15 min read</p>
+<p class="legal-lead">Most job boards mix desk jobs, expired postings, and roles that were never open to trades workers. This guide explains how on-site mining and trades hiring actually works in the USA and Canada, which roles are in demand, where to find verified listings, and how to apply so your resume reaches a real hiring manager.</p>
+
+<nav class="guide-toc" aria-label="Table of contents">
+    <div class="guide-toc-title">In this guide</div>
+    <ol>
+        <li><a href="#what-counts">What counts as a mining or trades job</a></li>
+        <li><a href="#state-of-industry">The state of mining &amp; trades hiring</a></li>
+        <li><a href="#job-types">Types of on-site roles</a></li>
+        <li><a href="#where-to-find">Where to find mining &amp; trades jobs</a></li>
+        <li><a href="#how-to-apply">How to apply and get hired</a></li>
+        <li><a href="#certifications">Certifications and safety basics</a></li>
+        <li><a href="#by-category">Jobs by category</a></li>
+        <li><a href="#by-region">Jobs by region</a></li>
+        <li><a href="#faq">Frequently asked questions</a></li>
+    </ol>
+</nav>
+
+<section class="legal-section" id="what-counts">
+    <h2>What Counts as a Mining or Trades Job?</h2>
+    <p>Before you start applying, it helps to know what employers mean when they post operator, underground, or trades roles. Not every listing on a generic board is a real on-site opening — and not every &ldquo;mining&rdquo; post is the same type of work.</p>
+
+    <h3>On-site vs camp vs FIFO</h3>
+    <div class="guide-table-wrap">
+        <table class="guide-table">
+            <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>What it means</th>
+                    <th>Best for</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Local on-site</strong></td>
+                    <td>Daily commute to a mine, plant, or construction site near your home.</td>
+                    <td>Workers living in or near active mining regions</td>
+                </tr>
+                <tr>
+                    <td><strong>Camp / FIFO</strong></td>
+                    <td>Fly-in fly-out or bus-in rotations with employer-provided camp accommodation.</td>
+                    <td>Workers willing to travel for higher pay and structured rotations</td>
+                </tr>
+                <tr>
+                    <td><strong>Project / shutdown</strong></td>
+                    <td>Short-term trades work during mill maintenance, construction, or turnaround.</td>
+                    <td>Red Seal trades and contractors seeking contract income</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <h3>Who hires on-site?</h3>
+    <ul>
+        <li><strong>Mining companies</strong> — open pit, underground, and processing operations</li>
+        <li><strong>Contractors</strong> — earthworks, shaft sinking, mill maintenance, construction</li>
+        <li><strong>Industrial employers</strong> — smelters, mills, power plants, and heavy industry</li>
+    </ul>
+
+    <h3>The &ldquo;real job vs noise&rdquo; problem</h3>
+    <p>Generic boards are flooded with reposted listings, recruiter spam, and roles that already filled. Watch for vague posts with no company name, no location, or unrealistic pay. That is why a <a href="{{ url_for('root') }}">mining and trades job board</a> saves hours compared to scrolling Indeed or LinkedIn — you spend less time on roles that were never meant for site workers.</p>
+</section>
+
+<section class="legal-section" id="state-of-industry">
+    <h2>Mining &amp; Trades Hiring: Trends and Outlook (2026)</h2>
+
+    <h3>Demand across the USA and Canada</h3>
+    <p>On-site mining and skilled trades remain strong across North America. Gold, copper, lithium, and industrial minerals drive hiring, while aging infrastructure and mill turnarounds keep trades contractors busy. For job seekers, that means opportunities exist — but competition for the best haul truck, underground, and Red Seal roles is real.</p>
+    <p>Northern Ontario, Quebec, BC, Saskatchewan, Nevada, Arizona, and other active districts continue to post operators, underground miners, and maintenance trades. Camp and FIFO roles often appear in remote regions where daily commuting is not practical.</p>
+
+    <h3>Roles in consistent demand</h3>
+    <p>These categories consistently post on-site openings across the USA and Canada:</p>
+    <ol>
+        <li><strong>Heavy equipment operators</strong> — haul truck, dozer, excavator, loader</li>
+        <li><strong>Underground mining</strong> — miner, bolter, jumbo operator, raise climber</li>
+        <li><strong>Mill &amp; plant</strong> — mill operator, process operator, metallurgist</li>
+        <li><strong>Drilling &amp; blasting</strong> — driller, blaster, powder crew</li>
+        <li><strong>Mechanical trades</strong> — millwright, mechanic, fitter</li>
+        <li><strong>Electrical trades</strong> — electrician, instrumentation tech</li>
+        <li><strong>Welding &amp; fabrication</strong> — welder, pipefitter, boilermaker</li>
+        <li><strong>General labor</strong> — laborer, helper, material handler</li>
+        <li><strong>Safety &amp; geology</strong> — safety officer, geologist, environmental tech</li>
+    </ol>
+
+    <h3>Pay expectations</h3>
+    <p>On-site mining and trades work often pays well — especially with overtime, camp premiums, and FIFO rotations. Pay varies by commodity, employer, union status, and your tickets. Entry-level labor and helper roles are a foot in the door; experienced operators and Red Seal trades command significantly more. Always confirm wages, shift structure, and benefits directly with the employer.</p>
+</section>
+
+<section class="legal-section" id="job-types">
+    <h2>Types of On-Site Roles</h2>
+
+    <h3>Full-time employee</h3>
+    <p>Direct hire with a mining company or contractor. You may receive benefits, training, and long-term career growth. Common for operators, underground miners, and trades at established sites.</p>
+
+    <h3>Contract / project work</h3>
+    <p>Trades contractors and specialized crews often work shutdowns, construction phases, or short-term projects. Higher day rates are common; you manage your own taxes and benefits as a contractor.</p>
+
+    <h3>Camp and FIFO rotations</h3>
+    <p>Remote sites hire workers on rotation schedules — for example 2&amp;1, 2&amp;2, or 14&amp;14. Employer-provided camp, meals, and travel are typical. Confirm rotation length, travel costs, and camp rules before accepting.</p>
+
+    <h3>Entry-level vs experienced roles</h3>
+    <p><strong>Entry-level:</strong> General labor, helper, entry operator roles with employer training. Competition is high — relevant tickets, a clean safety record, and reliability matter.</p>
+    <p><strong>Experienced:</strong> Haul truck operators, underground miners, millwrights, electricians, and welders with proven site experience. Employers expect valid tickets, safety training, and references from prior sites.</p>
+</section>
+
+<section class="legal-section" id="where-to-find">
+    <h2>Where to Find Mining &amp; Trades Jobs</h2>
+
+    <h3>General job boards</h3>
+    <div class="guide-table-wrap">
+        <table class="guide-table">
+            <thead>
+                <tr>
+                    <th>Source</th>
+                    <th>Pros</th>
+                    <th>Cons for trades workers</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Indeed / LinkedIn</td>
+                    <td>Large volume of listings</td>
+                    <td>Desk jobs mixed in; many expired mining posts</td>
+                </tr>
+                <tr>
+                    <td>Company career pages</td>
+                    <td>Accurate, direct listings</td>
+                    <td>Time-consuming to check one by one</td>
+                </tr>
+                <tr>
+                    <td>Local union halls</td>
+                    <td>Strong for organized trades</td>
+                    <td>Membership and dispatch rules vary</td>
+                </tr>
+                <tr>
+                    <td>Word of mouth</td>
+                    <td>High trust when referrals exist</td>
+                    <td>Hard to scale; not always timely</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <h3>Why use a mining &amp; trades job board?</h3>
+    <ul>
+        <li>Pre-filtered for on-site roles — not remote desk jobs</li>
+        <li>Listings updated regularly across operators, underground, mill, and trades</li>
+        <li>Free search during launch at <a href="/search">welcometotrades.com/search</a></li>
+    </ul>
+
+    <div class="guide-cta">
+        <p><strong>Search 10,000+ on-site mining &amp; trades jobs across the USA and Canada.</strong><br>Free to search during launch — no account required.</p>
+        <a href="/search" class="btn btn-primary">Search Jobs</a>
+    </div>
+
+    <h3>Other channels worth trying</h3>
+    <ul>
+        <li>Employer career pages for major miners and contractors in your target region</li>
+        <li>Industry job fairs and local trades associations</li>
+        <li>TikTok and social — follow <a href="https://www.tiktok.com/@rigtimmins" target="_blank" rel="noopener noreferrer">@rigtimmins</a> for mining and trades hiring content, then search open roles here</li>
+        <li>Referrals from coworkers — still one of the highest-conversion sources on site</li>
+    </ul>
+
+    <h3>Search tactics on any platform</h3>
+    <ul>
+        <li>Use specific titles: <code>haul truck operator</code>, <code>underground miner</code>, <code>millwright</code></li>
+        <li>Filter by city or region when you can — Timmins, Sudbury, Elko, and similar hubs</li>
+        <li>Apply early — active mining postings can fill within days</li>
+    </ul>
+</section>
+
+<section class="legal-section" id="how-to-apply">
+    <h2>How to Apply for Mining &amp; Trades Jobs (and Get Interviews)</h2>
+
+    <h3>Tailor your resume for site roles</h3>
+    <p>Mining HR and site supervisors scan quickly for tickets, equipment experience, and safety history. To stand out:</p>
+    <ul>
+        <li>List equipment operated — CAT 793, jumbo, LHD, etc. — and years of experience</li>
+        <li>Include valid certifications: Common Core, MSHA, Red Seal, WHMIS, first aid</li>
+        <li>Quantify safety record: incident-free hours, last site, shift preference</li>
+        <li>Keep it one to two pages; site hiring managers want clarity, not fluff</li>
+    </ul>
+
+    <h3>Write a short, direct cover note</h3>
+    <p>Three short paragraphs: your trade or operator background, why this site or company, and your availability (local, relocatable, or FIFO-ready). Mention tickets upfront — hiring teams need to know you can step on site.</p>
+
+    <h3>Build proof of experience</h3>
+    <ul>
+        <li><strong>Operators:</strong> Equipment types, tonnes moved, sites worked</li>
+        <li><strong>Underground:</strong> Methods (cut and fill, longhole, etc.), ground support experience</li>
+        <li><strong>Trades:</strong> Red Seal or journeyman status, shutdown and project history</li>
+        <li><strong>All roles:</strong> Strong references from supervisors or foremen</li>
+    </ul>
+
+    <h3>Prepare for site interviews</h3>
+    <p>Expect questions about safety, shift work, camp life, and equipment. Be ready to discuss your last site, why you left, and whether you can pass a drug and alcohol test and site orientation. Common questions include: &ldquo;What equipment have you run?&rdquo; and &ldquo;Are you available for FIFO?&rdquo;</p>
+
+    <h3>Application workflow checklist</h3>
+    <ol>
+        <li>Define 2–3 target roles (e.g. Haul Truck Operator, Underground Miner, Millwright)</li>
+        <li>Update resume with tickets and equipment list</li>
+        <li>Set alerts on Welcome to Trades and 1–2 company career pages</li>
+        <li>Apply to quality matches weekly — tailored beats mass-applying</li>
+        <li>Track applications: company, date, follow-up, status</li>
+    </ol>
+</section>
+
+<section class="legal-section" id="certifications">
+    <h2>Certifications &amp; Safety: What You Should Know</h2>
+    <p class="guide-disclaimer">This section is general information, not legal or safety advice. Confirm requirements with the employer and relevant regulators for your province or state.</p>
+
+    <h3>Common training and tickets</h3>
+    <p><strong>Canada:</strong> Common Core (Ontario underground), provincial mine safety, WHMIS, first aid, and trade certifications (Red Seal millwright, electrician, welder). <strong>USA:</strong> MSHA Part 46 or 48, state-specific requirements, OSHA awareness, and trade licenses where applicable.</p>
+
+    <h3>Site orientations and medicals</h3>
+    <p>Most employers require a site-specific orientation, drug and alcohol testing, and sometimes a fit-for-work medical before your first shift. Budget time and cost for these — they are standard on active mine sites.</p>
+
+    <h3>Cross-border work</h3>
+    <p>Working in another country usually requires valid work authorization — a work permit, visa, or legal status. Do not assume a Canadian ticket alone qualifies you for US site work, or vice versa. Confirm with the employer and immigration authorities before relocating.</p>
+</section>
+
+<section class="legal-section" id="by-category">
+    <h2>Browse Jobs by Category</h2>
+    <p>Mining and trades hiring spans many functions. These are the most active categories on <a href="{{ url_for('root') }}">Welcome to Trades</a>:</p>
+
+    <div class="guide-category-grid">
+        <div class="guide-category-card">
+            <h3>Operators</h3>
+            <p>Haul truck, dozer, excavator, loader, and other heavy equipment operators at open pit and quarry sites.</p>
+        </div>
+        <div class="guide-category-card">
+            <h3>Underground</h3>
+            <p>Miners, bolters, jumbo operators, raise climbers, and underground support roles.</p>
+        </div>
+        <div class="guide-category-card">
+            <h3>Mill &amp; Plant</h3>
+            <p>Mill operators, process operators, metallurgists, and plant maintenance at processing facilities.</p>
+        </div>
+        <div class="guide-category-card">
+            <h3>Trades</h3>
+            <p>Millwrights, electricians, welders, pipefitters, mechanics, and instrumentation techs.</p>
+        </div>
+        <div class="guide-category-card">
+            <h3>Labor</h3>
+            <p>General laborers, helpers, and material handlers — common entry points to site work.</p>
+        </div>
+        <div class="guide-category-card">
+            <h3>Drilling &amp; Blasting</h3>
+            <p>Drillers, blasters, and powder crew for open pit and underground operations.</p>
+        </div>
+        <div class="guide-category-card">
+            <h3>Safety &amp; Geology</h3>
+            <p>Safety officers, environmental techs, geologists, and survey support on active sites.</p>
+        </div>
+        <div class="guide-category-card">
+            <h3>Construction &amp; Shutdown</h3>
+            <p>Trades and labor for mill turnarounds, capital projects, and contractor work.</p>
+        </div>
+    </div>
+    <p>Use the category filters on our <a href="/search">job search</a> to browse roles in each area.</p>
+</section>
+
+<section class="legal-section" id="by-region">
+    <h2>Mining &amp; Trades Jobs by Region</h2>
+    <p>On-site work is tied to where the ore body, plant, or project is — but hiring often pulls workers from across the country. These regions are consistently active:</p>
+
+    <h3>Ontario (Canada)</h3>
+    <p>Timmins, Sudbury, Kirkland Lake, and Red Lake remain major hubs for underground and open pit mining, mill operations, and trades.</p>
+
+    <h3>Quebec &amp; British Columbia (Canada)</h3>
+    <p>Quebec hosts gold and base metal operations; BC has mining, smelting, and construction trades across the province.</p>
+
+    <h3>Prairies &amp; Atlantic Canada</h3>
+    <p>Saskatchewan potash and uranium, Manitoba mining, and select Atlantic projects hire operators and trades — often with camp rotations.</p>
+
+    <h3>Nevada, Arizona &amp; Western USA</h3>
+    <p>Gold and copper districts in Nevada, Arizona, and other western states post haul truck, underground, and maintenance trades roles regularly.</p>
+
+    <h3>Other US mining states</h3>
+    <p>Alaska, Montana, Michigan, and other states with active operations hire on-site — check company career pages and search by city when available.</p>
+</section>
+
+<section class="legal-section" id="faq">
+    <h2>Frequently Asked Questions About Mining &amp; Trades Jobs</h2>
+    <div class="guide-faq">
+        <details>
+            <summary>What types of mining and trades jobs does Welcome to Trades list?</summary>
+            <p>We focus on on-site roles: haul truck and heavy equipment operators, underground miners, mill and plant operators, drillers, blasters, mechanics, millwrights, electricians, welders, pipefitters, laborers, safety techs, geologists, and related site jobs across the USA and Canada.</p>
+        </details>
+        <details>
+            <summary>Are these remote or work-from-home jobs?</summary>
+            <p>No. Welcome to Trades is built for on-site mine, plant, and construction work — including camp and FIFO-style roles where listed.</p>
+        </details>
+        <details>
+            <summary>Which locations are covered?</summary>
+            <p>The United States and Canada. Use the city filter to narrow results to mining towns when those cities appear in listings.</p>
+        </details>
+        <details>
+            <summary>Is Welcome to Trades free?</summary>
+            <p>Yes for launch — browse and search listings free at <a href="/search">welcometotrades.com/search</a>. Paid plans may be offered later.</p>
+        </details>
+        <details>
+            <summary>How do I find mining jobs that hire in Canada or the USA?</summary>
+            <p>Search by role, category, or city on <a href="{{ url_for('root') }}">Welcome to Trades</a>. Filter for operators, underground, mill and plant, trades, labor, or safety and geology.</p>
+        </details>
+        <details>
+            <summary>Do I need certifications for mining and trades jobs?</summary>
+            <p>Many roles require tickets and safety training — Common Core, MSHA, Red Seal, WHMIS, first aid, and site orientations. Confirm requirements with each employer.</p>
+        </details>
+        <details>
+            <summary>Are mining and trades jobs well paid?</summary>
+            <p>Compensation varies by role, experience, and location. Operators and Red Seal trades often earn strong wages, especially with camp or FIFO premiums. Confirm pay directly with the employer.</p>
+        </details>
+        <details>
+            <summary>What is FIFO or camp work?</summary>
+            <p>Fly-in fly-out or camp-based roles require you to work at a remote site for a set rotation with employer-provided camp accommodation. Common in northern Canada and remote US districts.</p>
+        </details>
+        <details>
+            <summary>How often are job listings updated?</summary>
+            <p>Listings on Welcome to Trades are refreshed regularly from public job boards and company career pages for mining and trades roles across the US and Canada.</p>
+        </details>
+        <details>
+            <summary>Where can I follow hiring tips and site updates?</summary>
+            <p>Follow <a href="https://www.tiktok.com/@rigtimmins" target="_blank" rel="noopener noreferrer">@rigtimmins</a> on TikTok for mining and trades content, then use Welcome to Trades to search open roles.</p>
+        </details>
+    </div>
+</section>
+
+<section class="legal-section">
+    <h2>Start Your Mining &amp; Trades Job Search Today</h2>
+    <p>Real on-site work is out there — but it is buried under desk jobs and expired posts on generic boards. Focus on verified sources, tickets on your resume, and the categories that match your experience.</p>
+    <ul>
+        <li>On-site mining and trades roles are not the same as remote desk jobs</li>
+        <li>Operators, underground, mill, and Red Seal trades remain the strongest categories</li>
+        <li>A focused weekly search beats mass-applying to irrelevant listings</li>
+    </ul>
+
+    <div class="guide-cta">
+        <p><strong>Welcome to Trades</strong> filters listings so you see on-site mining and trades roles across the USA and Canada.<br>Free to search during launch.</p>
+        <a href="/search" class="btn btn-primary">Search Jobs</a>
+        &nbsp;
+        <a href="{{ url_for('root') }}" class="btn btn-outline">Browse homepage</a>
+    </div>
+    <p>Questions? Visit our <a href="{{ url_for('support') }}">support page</a> or contact us from the <a href="{{ url_for('root') }}#contact">homepage contact form</a>.</p>
+</section>
+{% endblock %}

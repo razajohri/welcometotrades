@@ -1,0 +1,25 @@
+{% extends "legal_base.html" %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='contact_form.css') }}">
+    {% if recaptcha_enabled and recaptcha_site_key %}
+    <script src="https://www.google.com/recaptcha/api.js?render={{ recaptcha_site_key }}" async defer></script>
+    {% endif %}
+    <script src="{{ url_for('static', filename='contact_form.js') }}" defer></script>
+{% endblock %}
+
+{% block content %}
+<h1>Support</h1>
+<p class="legal-lead">We're here to help you find on-site mining and trades work in the USA and Canada. Send us a message below and we'll get back to you as quickly as we can.</p>
+
+<section class="legal-section contact-form-block">
+    <h2>Contact us</h2>
+    <p>Include your email, a short subject, and as much detail as you need. You can also email us directly at <a href="mailto:{{ support_email }}">{{ support_email }}</a>.</p>
+    {% include '_contact_form.html' %}
+</section>
+
+<section class="legal-section">
+    <h2>Still need help?</h2>
+    <p>Use the form above, visit the <a href="{{ url_for('root') }}#contact">contact section</a> on our homepage, or email <a href="mailto:{{ support_email }}">{{ support_email }}</a>. We're a small team serving mining and trades job seekers — thanks for your patience.</p>
+</section>
+{% endblock %}

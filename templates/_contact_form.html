@@ -1,0 +1,57 @@
+<form
+    id="{{ form_id|default('contact-form') }}"
+    class="contact-form {{ form_class|default('') }}"
+    data-contact-form
+    data-recaptcha-enabled="{{ 'true' if recaptcha_enabled else 'false' }}"
+    data-recaptcha-site-key="{{ recaptcha_site_key|e }}"
+    novalidate
+>
+    <div
+        class="contact-message"
+        data-contact-message
+        hidden
+        role="status"
+        aria-live="polite"
+    ></div>
+
+    <label for="{{ form_id|default('contact-form') }}-email">Email address</label>
+    <input
+        type="email"
+        id="{{ form_id|default('contact-form') }}-email"
+        name="email"
+        autocomplete="email"
+        required
+    >
+
+    <label for="{{ form_id|default('contact-form') }}-subject">Subject</label>
+    <input
+        type="text"
+        id="{{ form_id|default('contact-form') }}-subject"
+        name="subject"
+        placeholder="What is this about?"
+        required
+    >
+
+    <label for="{{ form_id|default('contact-form') }}-message">Details</label>
+    <textarea
+        id="{{ form_id|default('contact-form') }}-message"
+        name="message"
+        placeholder="Tell us more..."
+        required
+    ></textarea>
+
+    <input
+        type="text"
+        name="website"
+        tabindex="-1"
+        autocomplete="off"
+        aria-hidden="true"
+        style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;"
+    >
+
+    <button type="submit" class="contact-submit" data-contact-submit>Send</button>
+
+    {% if show_note|default(true) %}
+    <div class="contact-note">We'll try to respond within one business day.</div>
+    {% endif %}
+</form>

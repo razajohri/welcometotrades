@@ -1,0 +1,76 @@
+{% extends "legal_base.html" %}
+
+{% block content %}
+<h1>Privacy Policy</h1>
+<p class="legal-meta">Last updated: June 18, 2026</p>
+<p class="legal-lead">Welcome to Trades ("we," "us," or "our") respects your privacy. This policy explains what information we collect, how we use it, and your choices when you use welcometotrades.com and related services.</p>
+
+<section class="legal-section">
+    <h2>Information we collect</h2>
+    <h3>Account information</h3>
+    <p>When you register or sign in, we collect your email address for authentication (magic links via our auth provider). We do not store passwords.</p>
+
+    <h3>Payment information</h3>
+    <p>Payments for lifetime access are handled by <strong>Stripe</strong>. We do not store full credit card numbers on our servers. Stripe may collect billing name, email, and payment method details according to their own privacy policy.</p>
+
+    <h3>Contact messages</h3>
+    <p>If you use our contact form, we collect your email, subject, message, and technical metadata (such as IP address and browser information) to respond to you and prevent abuse.</p>
+
+    <h3>Usage data</h3>
+    <p>We may collect standard log data when you visit the site — for example, pages viewed, approximate location (country/region), browser type, and referring URL — to keep the service secure and improve performance.</p>
+</section>
+
+<section class="legal-section">
+    <h2>How we use your information</h2>
+    <ul>
+        <li>Provide access to job search and account features</li>
+        <li>Process one-time lifetime access payments</li>
+        <li>Respond to support requests and contact form submissions</li>
+        <li>Send service-related emails (e.g., account confirmation, payment receipts)</li>
+        <li>Detect fraud, spam, and security issues (including reCAPTCHA on contact forms)</li>
+        <li>Improve our job listings and website experience</li>
+    </ul>
+    <p>We do not sell your personal information to third parties.</p>
+</section>
+
+<section class="legal-section">
+    <h2>Service providers</h2>
+    <p>We use trusted third parties to operate the site, including:</p>
+    <ul>
+        <li><strong>Supabase</strong> — authentication and database hosting</li>
+        <li><strong>Stripe</strong> — payment processing</li>
+        <li><strong>Google reCAPTCHA</strong> — bot protection on contact forms</li>
+    </ul>
+    <p>These providers process data only as needed to perform services on our behalf and under contractual obligations.</p>
+</section>
+
+<section class="legal-section">
+    <h2>Cookies & local storage</h2>
+    <p>We use essential cookies and session storage to keep you signed in and remember preferences. Third-party services (such as Stripe checkout and reCAPTCHA) may set their own cookies when you interact with them.</p>
+</section>
+
+<section class="legal-section">
+    <h2>Data retention</h2>
+    <p>We retain account and subscription records while your account is active and as needed for legal, tax, and support purposes. Contact form messages are kept for a reasonable period to resolve inquiries. You may request deletion of your account by contacting <a href="mailto:{{ support_email }}">{{ support_email }}</a>.</p>
+</section>
+
+<section class="legal-section">
+    <h2>Your rights (Canada)</h2>
+    <p>Depending on your province, you may have rights to access, correct, or delete personal information we hold about you. To exercise these rights, email us at <a href="mailto:{{ support_email }}">{{ support_email }}</a>. We will verify your identity before processing requests.</p>
+</section>
+
+<section class="legal-section">
+    <h2>Children</h2>
+    <p>Our service is intended for users 18 and older. We do not knowingly collect information from children under 18.</p>
+</section>
+
+<section class="legal-section">
+    <h2>Changes to this policy</h2>
+    <p>We may update this Privacy Policy from time to time. The "Last updated" date at the top will reflect the latest version. Continued use of the site after changes means you accept the updated policy.</p>
+</section>
+
+<section class="legal-section">
+    <h2>Contact</h2>
+    <p>Questions about privacy? Email <a href="mailto:{{ support_email }}">{{ support_email }}</a> or visit our <a href="{{ url_for('support') }}">Support page</a>.</p>
+</section>
+{% endblock %}

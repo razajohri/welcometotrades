@@ -1,0 +1,78 @@
+<div class="resume-modal" id="resume-modal" role="dialog" aria-modal="true" aria-labelledby="resume-modal-title" hidden>
+    <div class="resume-modal-backdrop" data-resume-close tabindex="-1"></div>
+    <div class="resume-modal-panel">
+        <button type="button" class="resume-modal-close" data-resume-close aria-label="Close resume tips">&times;</button>
+        <h2 id="resume-modal-title" class="resume-modal-title">Resume</h2>
+        <p class="resume-modal-lead">How to make a resume in 2025</p>
+        <p class="resume-modal-intro">75% of resumes are read by computers.</p>
+
+        <div class="resume-modal-section">
+            <h3>Keyword matching</h3>
+            <p>Tailor your resume to each job posting. Use the exact same keywords, skills, and tools as the job posting.</p>
+        </div>
+
+        <div class="resume-modal-section">
+            <h3>Make your resume readable by computers</h3>
+            <p>Don't use images, multiple columns, etc. Scanning systems will not be able to read your resume correctly.</p>
+        </div>
+
+        <div class="resume-modal-section">
+            <h3>AI resume builder</h3>
+            <p>Use <a href="https://www.rezpass.com/" target="_blank" rel="noopener noreferrer">RezPass</a> by Roman (creator of Welcome to Trades). It provides keyword matching in 1 click. It performs over 30 checks to make sure your resume is optimized for computers. Tested on all major scanning systems.</p>
+        </div>
+    </div>
+</div>
+
+<script>
+(function () {
+    const modal = document.getElementById('resume-modal');
+    if (!modal) return;
+
+    const openBtns = document.querySelectorAll('[data-resume-open]');
+    const closeEls = modal.querySelectorAll('[data-resume-close]');
+    const panel = modal.querySelector('.resume-modal-panel');
+    let lastFocused = null;
+
+    function openModal() {
+        lastFocused = document.activeElement;
+        modal.hidden = false;
+        document.body.classList.add('resume-modal-open');
+        const closeBtn = modal.querySelector('.resume-modal-close');
+        if (closeBtn) closeBtn.focus();
+    }
+
+    function closeModal() {
+        modal.hidden = true;
+        document.body.classList.remove('resume-modal-open');
+        if (lastFocused && typeof lastFocused.focus === 'function') {
+            lastFocused.focus();
+        }
+    }
+
+    openBtns.forEach(function (btn) {
+        btn.addEventListener('click', openModal);
+    });
+
+    closeEls.forEach(function (el) {
+        el.addEventListener('click', closeModal);
+    });
+
+    modal.addEventListener('click', function (e) {
+        if (e.target === modal.querySelector('.resume-modal-backdrop')) {
+            closeModal();
+        }
+    });
+
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && !modal.hidden) {
+            closeModal();
+        }
+    });
+
+    if (panel) {
+        panel.addEventListener('click', function (e) {
+            e.stopPropagation();
+        });
+    }
+})();
+</script>

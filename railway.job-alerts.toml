@@ -1,0 +1,10 @@
+[build]
+builder = "nixpacks"
+
+[deploy]
+startCommand = "python scripts/send_job_alerts.py"
+cronSchedule = "0 13 * * *"
+restartPolicyType = "never"
+
+[environments.production.variables]
+FLASK_ENV = "production"

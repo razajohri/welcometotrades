@@ -1,0 +1,5 @@
+{% set job_total = total_results if total_results is defined else (total if total is defined else (total_count if total_count is defined else (page_jobs|length if page_jobs is defined else 0))) %}
+<p class="results-summary">
+    <strong>{{ job_total | intcomma }}</strong> jobs found
+    <span class="results-summary-note">· Newest postings shown first</span>
+</p>

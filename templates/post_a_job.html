@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ seo_title }}</title>
+    {% include '_seo_head.html' %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='post_a_job.css') }}">
+    {% if recaptcha_enabled and recaptcha_site_key %}
+    <script src="https://www.google.com/recaptcha/api.js?render={{ recaptcha_site_key }}" async defer></script>
+    {% endif %}
+    <script src="{{ url_for('static', filename='post_a_job.js') }}" defer></script>
+</head>
+<body class="auth-page post-job-page">
+    <header class="app-topbar">
+        <div class="app-topbar-inner">
+            <a href="/" class="app-topbar-brand">
+                <img src="{{ url_for('static', filename='logo.svg') }}" alt="Welcome to Trades" class="app-topbar-logo">
+                <span class="app-topbar-title">Welcome to Trades</span>
+            </a>
+            {% include '_mobile_account_link.html' %}
+            <div class="app-topbar-actions">
+                {% include '_topnav_box.html' %}
+            </div>
+        </div>
+    </header>
+
+    <main class="post-job-main">
+        <div class="post-job-layout">
+            <aside class="post-job-benefits">
+                <p class="post-job-eyebrow">For employers</p>
+                <h1>Post a Job</h1>
+                <p class="post-job-lead">Reach skilled mining and trades candidates across the USA and Canada. Featured listings put your role in front of job seekers actively searching our board.</p>
+
+                <h2 class="post-job-benefits-title">Benefits</h2>
+                <ul class="post-job-benefit-list">
+                    <li>
+                        <span class="post-job-benefit-icon" aria-hidden="true">★</span>
+                        <div>
+                            <strong>Featured at the top of the job board</strong>
+                            <p>Your listing appears above standard results for maximum visibility.</p>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="post-job-benefit-icon" aria-hidden="true">↗</span>
+                        <div>
+                            <strong>Reach 30K+ new candidates monthly</strong>
+                            <p>Tap into our audience of mining and trades job seekers.</p>
+                        </div>
+                    </li>
+                </ul>
+
+                <div class="post-job-pricing-preview">
+                    <div class="post-job-pricing-card">
+                        <span class="post-job-pricing-amount">$100</span>
+                        <span class="post-job-pricing-term">7 days featured</span>
+                    </div>
+                    <div class="post-job-pricing-card post-job-pricing-card--featured">
+                        <span class="post-job-pricing-badge">Best value</span>
+                        <span class="post-job-pricing-amount">$200</span>
+                        <span class="post-job-pricing-term">30 days featured</span>
+                    </div>
+                </div>
+            </aside>
+
+            <section class="post-job-form-panel">
+                <form
+                    id="post-job-form"
+                    class="post-job-form"
+                    data-post-job-form
+                    data-recaptcha-enabled="{{ 'true' if recaptcha_enabled else 'false' }}"
+                    data-recaptcha-site-key="{{ recaptcha_site_key|e }}"
+                    novalidate
+                >
+                    <div class="post-job-form-message" data-post-job-message hidden role="status" aria-live="polite"></div>
+
+                    <label for="post-job-company">Company name</label>
+                    <input type="text" id="post-job-company" name="company_name" required autocomplete="organization">
+
+                    <label for="post-job-title">Job title</label>
+                    <input type="text" id="post-job-title" name="job_title" required autocomplete="off">
+
+                    <label for="post-job-tags">Tags, keywords, or stack</label>
+                    <input type="text" id="post-job-tags" name="tags" placeholder="e.g. Haul Truck, Underground, Millwright, Red Seal" autocomplete="off">
+
+                    <label for="post-job-salary">Salary range <span class="post-job-optional">(optional)</span></label>
+                    <input type="text" id="post-job-salary" name="salary_range" placeholder="e.g. CAD $80,000 – $100,000" autocomplete="off">
+
+                    <label for="post-job-description">Job description</label>
+                    <textarea id="post-job-description" name="job_description" rows="7" required placeholder="Role overview, responsibilities, and requirements…"></textarea>
+
+                    <label for="post-job-apply">How should candidates apply?</label>
+                    <textarea id="post-job-apply" name="apply_method" rows="3" required placeholder="Application URL, email, or instructions"></textarea>
+
+                    <label for="post-job-invoice-email">Company email <span class="post-job-optional">(for invoice)</span></label>
+                    <input type="email" id="post-job-invoice-email" name="invoice_email" required autocomplete="email">
+
+                    <label for="post-job-questions">Questions / comments</label>
+                    <textarea id="post-job-questions" name="questions" rows="3" placeholder="Anything else we should know?"></textarea>
+
+                    <fieldset class="post-job-pricing-fieldset">
+                        <legend>Pricing option</legend>
+                        <label class="post-job-pricing-option">
+                            <input type="radio" name="pricing_option" value="7_days_100" required>
+                            <span class="post-job-pricing-option-body">
+                                <span class="post-job-pricing-option-price">$100</span>
+                                <span class="post-job-pricing-option-label">for 7 days</span>
+                            </span>
+                        </label>
+                        <label class="post-job-pricing-option">
+                            <input type="radio" name="pricing_option" value="30_days_200">
+                            <span class="post-job-pricing-option-body">
+                                <span class="post-job-pricing-option-price">$200</span>
+                                <span class="post-job-pricing-option-label">for 30 days</span>
+                            </span>
+                        </label>
+                    </fieldset>
+
+                    <input
+                        type="text"
+                        name="website"
+                        tabindex="-1"
+                        autocomplete="off"
+                        aria-hidden="true"
+                        class="post-job-honeypot"
+                    >
+
+                    <button type="submit" class="btn btn-primary btn-block post-job-submit" data-post-job-submit>Submit</button>
+                    <p class="post-job-note">After you submit, our team will review your listing and send an invoice to the email provided. Your job goes live once payment is confirmed. Questions? Email <a href="mailto:{{ support_email }}">{{ support_email }}</a>.</p>
+                </form>
+            </section>
+        </div>
+    </main>
+
+    {% include '_resume_modal.html' %}
+    {% include '_footer.html' %}
+</body>
+</html>

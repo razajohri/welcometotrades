@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ seo_title }}</title>
+    {% include '_seo_head.html' %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
+</head>
+<body class="auth-page">
+    <header class="app-topbar">
+        <div class="app-topbar-inner">
+            <a href="/" class="app-topbar-brand">
+                <img src="{{ url_for('static', filename='logo.svg') }}" alt="Welcome to Trades" class="app-topbar-logo">
+                <span class="app-topbar-title">Welcome to Trades</span>
+            </a>
+            <div class="app-topbar-actions">
+                <a href="/login" class="btn btn-outline">Sign in</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="auth-main">
+        <div class="auth-card">
+            <img src="{{ url_for('static', filename='logo.svg') }}" alt="" class="auth-card-logo">
+            <h1>Create your account</h1>
+            <p class="subtitle">New here? Enter your email and we'll send a link to get started. No password needed.</p>
+
+            {% if error %}<div class="alert alert-error">{{ error }}</div>{% endif %}
+            {% if message %}<div class="alert alert-success">{{ message }}</div>{% endif %}
+
+            {% if magic_link_sent or show_otp_form %}
+            <form method="POST" class="auth-otp-form">
+                <input type="hidden" name="username" value="{{ email or '' }}">
+                <div class="form-group">
+                    <label class="form-label" for="otp_code">6-digit code from your email</label>
+                    <input class="form-input" type="text" id="otp_code" name="otp_code" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6,8}" maxlength="8" placeholder="123456" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-lg btn-block">Finish sign-up with code</button>
+            </form>
+            <p class="auth-footer-link">Using Outlook or Hotmail? The link in your email may not work — use the code above. Didn't get it? Check spam or <a href="{{ url_for('register') }}">request a new email</a>.</p>
+            {% else %}
+            <form method="POST">
+                <div class="form-group">
+                    <label class="form-label" for="username">Email address</label>
+                    <input class="form-input" type="email" id="username" name="username" placeholder="you@example.com" value="{{ email or '' }}" required autocomplete="email">
+                </div>
+                <button type="submit" class="btn btn-primary btn-lg btn-block">Email me a sign-up link</button>
+            </form>
+            <p class="auth-footer-link">Already have an account? <a href="/login">Sign in</a></p>
+            {% endif %}
+        </div>
+    </main>
+</body>
+</html>

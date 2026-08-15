@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ seo_title }}</title>
+    {% include '_seo_head.html' %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
+    <style>
+        .lifetime-hero {
+            position: relative;
+            width: 100%;
+            height: 320px;
+            background: url('/static/toronto.jpeg') center 43% / cover no-repeat;
+        }
+        .lifetime-hero::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.35) 100%);
+        }
+        .lifetime-hero .app-topbar {
+            position: absolute;
+            background: transparent;
+            border-bottom: none;
+            backdrop-filter: none;
+        }
+        .lifetime-hero .app-topbar-title,
+        .lifetime-hero .app-topbar-brand {
+            color: #fff;
+        }
+        .lifetime-hero .app-topbar-logo {
+            border-color: rgba(255,255,255,0.5);
+        }
+        .lifetime-hero .btn-outline {
+            background: rgba(255,255,255,0.95);
+            border-color: #fff;
+            color: var(--brand-red);
+        }
+        .lifetime-main {
+            max-width: var(--container-max);
+            margin: 0 auto;
+            padding: var(--space-2xl) var(--space-lg) var(--space-4xl);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--space-3xl);
+        }
+        .lifetime-intro {
+            text-align: center;
+            max-width: 520px;
+        }
+        .lifetime-intro h1 {
+            font-size: clamp(1.75rem, 4vw, 2.25rem);
+            font-weight: 800;
+            margin: 0 0 var(--space-sm);
+            letter-spacing: -0.02em;
+        }
+        .lifetime-intro p {
+            color: var(--text-secondary);
+            margin: 0;
+            font-size: 1.05rem;
+        }
+        .reviews-rating {
+            text-align: center;
+            color: var(--brand-red);
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: var(--space-lg);
+        }
+        @media (max-width: 700px) {
+            .lifetime-hero { height: 240px; }
+            .lifetime-main { padding: var(--space-xl) var(--space-md) var(--space-3xl); }
+        }
+    </style>
+</head>
+<body>
+    <div class="lifetime-hero">
+        <header class="app-topbar">
+            <div class="app-topbar-inner">
+                <a href="/" class="app-topbar-brand">
+                    <img src="{{ url_for('static', filename='logo.svg') }}" alt="Welcome to Trades" class="app-topbar-logo">
+                    <span class="app-topbar-title">Welcome to Trades</span>
+                </a>
+                <div class="app-topbar-actions">
+                    <a href="{{ sign_in_cta_url }}" class="btn btn-outline">Sign in</a>
+                </div>
+            </div>
+        </header>
+    </div>
+
+    <main class="lifetime-main">
+        <div class="lifetime-intro">
+            <h1>Ready to get lifetime access?</h1>
+            <p>One payment. Unlimited access to verified mining and trades jobs across the USA and Canada. Search is free right now during launch.</p>
+        </div>
+
+        <div class="pricing-card">
+            <div class="pricing-price">$24.99 <span style="font-size:0.95rem; font-weight:400;">one-time fee</span></div>
+            <ul class="pricing-features">
+                <li>No monthly fees</li>
+                <li>Access to all jobs</li>
+                <li>10,000+ verified on-site roles</li>
+                <li>Constantly updated with new jobs</li>
+            </ul>
+            <a href="/subscribe" class="btn btn-primary btn-lg btn-block">Get Access</a>
+        </div>
+
+        <div class="reviews-section">
+            <div class="section-label">Testimonials</div>
+            <div class="section-title">Reviews</div>
+            <div class="reviews-rating">★★★★★ 4.75/5</div>
+            <div class="reviews-grid">
+                <div class="review-card">
+                    <img src="/static/darian.webp" class="review-portrait" alt="Darian">
+                    <div class="review-name">Darian Mathieson</div>
+                    <div class="review-country">Saskatoon, SK</div>
+                    <div class="review-body">I was tired of scrolling Indeed for haul truck jobs that were already filled. Welcome to Trades surfaces real mining roles across Canada.</div>
+                </div>
+                <div class="review-card">
+                    <img src="/static/kiana.webp" class="review-portrait" alt="Kiana">
+                    <div class="review-name">Kiana Sieg</div>
+                    <div class="review-country">Toronto, ON</div>
+                    <div class="review-body">Finally a job board built for trades workers, not desk jobs. I found underground and millwright listings I never saw on LinkedIn.</div>
+                </div>
+                <div class="review-card">
+                    <img src="/static/andrey.webp" class="review-portrait" alt="Andrey">
+                    <div class="review-name">Andrey Kuksin</div>
+                    <div class="review-country">Edmonton, AB</div>
+                    <div class="review-body">Clean and easy to navigate. No spam or outdated jobs. I've already recommended it to friends in the trades looking for on-site work.</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    {% include '_footer.html' %}
+</body>
+</html>

@@ -1,0 +1,11 @@
+<nav class="topnav-box" aria-label="Quick navigation">
+    <a href="/" class="topnav-box-item{% if request.endpoint in ['root', 'landing_canada', 'index'] %} topnav-box-item--active{% endif %}">Home</a>
+    <span class="topnav-box-divider" aria-hidden="true"></span>
+    <a href="{{ url_for('account') }}" class="topnav-box-item{% if request.endpoint == 'account' %} topnav-box-item--active{% endif %}"><span class="topnav-label-full">My Account</span><span class="topnav-label-short" aria-hidden="true">Account</span></a>
+    <span class="topnav-box-divider" aria-hidden="true"></span>
+    <button type="button" class="topnav-box-item topnav-box-item--resume" data-resume-open aria-haspopup="dialog" aria-controls="resume-modal">
+        Resume
+    </button>
+    <span class="topnav-box-divider" aria-hidden="true"></span>
+    <a href="{{ url_for('post_a_job') }}" class="topnav-box-item topnav-box-item--post-job{% if request.endpoint == 'post_a_job' %} topnav-box-item--active{% endif %}"><span class="topnav-label-full">Post a Job</span><span class="topnav-label-short" aria-hidden="true">Post Job</span></a>
+</nav>

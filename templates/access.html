@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>{{ seo_title }}</title>
+    {% include '_seo_head.html' %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        body {
+            font-family: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+            min-height: 100vh;
+            min-height: 100dvh;
+        }
+
+        .access-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background: url('/static/toronto.jpeg') center center / cover no-repeat;
+        }
+
+        .access-bg::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                180deg,
+                rgba(0, 0, 0, 0.35) 0%,
+                rgba(0, 0, 0, 0.2) 45%,
+                rgba(0, 0, 0, 0.45) 100%
+            );
+        }
+
+        .access-hero {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            min-height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding:
+                max(28px, env(safe-area-inset-top))
+                max(20px, env(safe-area-inset-right))
+                max(24px, env(safe-area-inset-bottom))
+                max(20px, env(safe-area-inset-left));
+        }
+
+        .access-top {
+            width: 100%;
+            max-width: 720px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 20px;
+            padding-top: 8px;
+        }
+
+        .access-rating {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            color: #fff;
+        }
+
+        .access-stars {
+            font-size: 1.35rem;
+            letter-spacing: 0.12em;
+            color: #fbbf24;
+            line-height: 1;
+        }
+
+        .access-rating-score {
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.95);
+        }
+
+        .access-brand {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .access-logo {
+            width: clamp(56px, 12vw, 72px);
+            height: clamp(56px, 12vw, 72px);
+            border-radius: 50%;
+            object-fit: cover;
+            background: #fff;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        .access-brand-name {
+            font-size: clamp(1.25rem, 4vw, 1.65rem);
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: -0.02em;
+        }
+
+        .access-headline {
+            margin: 0;
+            font-size: clamp(1.35rem, 4.5vw, 2.15rem);
+            font-weight: 700;
+            line-height: 1.25;
+            color: #fff;
+            max-width: 20ch;
+            text-shadow: 0 2px 16px rgba(0, 0, 0, 0.25);
+        }
+
+        .access-bottom {
+            width: 100%;
+            max-width: 520px;
+            margin-top: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            padding-bottom: 8px;
+        }
+
+        .access-turn {
+            margin: 0;
+            font-size: clamp(1.35rem, 4.5vw, 2rem);
+            font-weight: 700;
+            color: #fff;
+            text-align: center;
+            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .access-form {
+            display: flex;
+            align-items: stretch;
+            width: 100%;
+            max-width: 440px;
+            gap: 0;
+            background: #fff;
+            border-radius: 999px;
+            padding: 4px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
+        }
+
+        .access-input {
+            flex: 1 1 auto;
+            min-width: 0;
+            border: none;
+            background: transparent;
+            padding: 14px 18px;
+            font-size: 1rem;
+            font-family: inherit;
+            color: #111;
+            outline: none;
+            border-radius: 999px 0 0 999px;
+        }
+
+        .access-input::placeholder {
+            color: #9ca3af;
+        }
+
+        .access-continue {
+            flex: 0 0 auto;
+            border: none;
+            border-radius: 999px;
+            padding: 14px 22px;
+            min-height: 48px;
+            font-size: 1rem;
+            font-weight: 700;
+            font-family: inherit;
+            color: #fff;
+            background: var(--brand-red, #e53935);
+            cursor: pointer;
+            white-space: nowrap;
+            transition: filter 0.15s ease, transform 0.15s ease;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+
+        .access-continue:hover {
+            filter: brightness(1.06);
+        }
+
+        .access-continue:active {
+            transform: scale(0.98);
+        }
+
+        .access-status {
+            margin: 0;
+            font-size: 0.9375rem;
+            text-align: center;
+            color: #fecaca;
+        }
+
+        .access-legal {
+            margin: 8px 0 0;
+            font-size: 0.8125rem;
+            line-height: 1.5;
+            color: rgba(255, 255, 255, 0.85);
+            text-align: center;
+            max-width: 360px;
+        }
+
+        .access-legal a {
+            color: #fff;
+            font-weight: 600;
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+
+        .access-legal a:hover {
+            color: #fff;
+            opacity: 0.9;
+        }
+
+        @media (max-width: 540px) {
+            .access-hero {
+                padding:
+                    max(12px, env(safe-area-inset-top))
+                    max(16px, env(safe-area-inset-right))
+                    max(12px, env(safe-area-inset-bottom))
+                    max(16px, env(safe-area-inset-left));
+            }
+
+            .access-top {
+                gap: 10px;
+                padding-top: 0;
+            }
+
+            .access-rating {
+                gap: 4px;
+            }
+
+            .access-stars {
+                font-size: 0.95rem;
+                letter-spacing: 0.06em;
+            }
+
+            .access-rating-score {
+                font-size: 0.8125rem;
+            }
+
+            .access-brand {
+                gap: 8px;
+            }
+
+            .access-logo {
+                width: 44px;
+                height: 44px;
+            }
+
+            .access-brand-name {
+                font-size: 1rem;
+            }
+
+            .access-headline {
+                font-size: 1.125rem;
+                line-height: 1.35;
+                max-width: 18ch;
+                padding: 0 4px;
+            }
+
+            .access-bottom {
+                gap: 10px;
+                padding-bottom: 0;
+            }
+
+            .access-turn {
+                font-size: 1.0625rem;
+            }
+
+            .access-form {
+                flex-direction: column;
+                border-radius: 16px;
+                padding: 6px;
+                gap: 6px;
+                max-width: 100%;
+            }
+
+            .access-input {
+                border-radius: 12px;
+                background: #f9fafb;
+                text-align: center;
+                font-size: 16px;
+                padding: 12px 14px;
+            }
+
+            .access-continue {
+                width: 100%;
+                border-radius: 12px;
+                padding: 12px 16px;
+                min-height: 44px;
+                font-size: 0.9375rem;
+            }
+
+            .access-legal {
+                font-size: 0.75rem;
+                line-height: 1.45;
+                max-width: 280px;
+            }
+        }
+
+        @media (max-width: 390px) {
+            .access-headline {
+                font-size: 1.0625rem;
+                max-width: 16ch;
+            }
+
+            .access-turn {
+                font-size: 1rem;
+            }
+
+            .access-brand-name {
+                font-size: 0.9375rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="access-bg" aria-hidden="true"></div>
+
+    <main class="access-hero">
+        <div class="access-top">
+            <div class="access-rating" aria-label="Rated 4.75 out of 5 stars">
+                <div class="access-stars" aria-hidden="true">★★★★★</div>
+                <div class="access-rating-score">4.75 / 5</div>
+            </div>
+
+            <div class="access-brand">
+                <img src="{{ url_for('static', filename='logo.svg') }}" alt="" class="access-logo">
+                <div class="access-brand-name">welcometotrades.com</div>
+            </div>
+
+            <h1 class="access-headline">We've helped trades workers across the USA and Canada find on-site mining jobs.</h1>
+        </div>
+
+        <div class="access-bottom">
+            <p class="access-turn">Search is free during launch — enter your email to continue.</p>
+
+            {% if error %}
+            <p class="access-status">{{ error }}</p>
+            {% endif %}
+
+            <form class="access-form" method="POST" action="{{ url_for('access') }}">
+                <input
+                    class="access-input"
+                    type="email"
+                    name="email"
+                    placeholder="Enter your email"
+                    value="{{ email or '' }}"
+                    required
+                    autocomplete="email"
+                    aria-label="Email address"
+                >
+                <button class="access-continue" type="submit">Continue</button>
+            </form>
+
+            <p class="access-legal">
+                By proceeding you agree to our
+                <a href="{{ url_for('privacy') }}">privacy policy</a>.
+            </p>
+        </div>
+    </main>
+</body>
+</html>

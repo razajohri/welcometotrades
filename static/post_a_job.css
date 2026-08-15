@@ -1,0 +1,309 @@
+.post-job-page .post-job-main {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: calc(var(--nav-height) + var(--space-2xl)) var(--space-lg) var(--space-3xl);
+}
+
+.post-job-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+    gap: var(--space-2xl);
+    align-items: start;
+}
+
+.post-job-eyebrow {
+    margin: 0 0 var(--space-sm);
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--brand-red);
+}
+
+.post-job-benefits h1 {
+    margin: 0 0 var(--space-sm);
+    font-size: clamp(2rem, 4vw, 2.75rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+}
+
+.post-job-lead {
+    margin: 0 0 var(--space-xl);
+    color: var(--text-secondary);
+    line-height: 1.65;
+    font-size: 1.02rem;
+}
+
+.post-job-benefits-title {
+    margin: 0 0 var(--space-md);
+    font-size: 1.125rem;
+    font-weight: 700;
+}
+
+.post-job-benefit-list {
+    list-style: none;
+    margin: 0 0 var(--space-xl);
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+}
+
+.post-job-benefit-list li {
+    display: flex;
+    gap: var(--space-md);
+    align-items: flex-start;
+}
+
+.post-job-benefit-icon {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--brand-red-light);
+    color: var(--brand-red);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.95rem;
+    font-weight: 700;
+}
+
+.post-job-benefit-list strong {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 0.98rem;
+}
+
+.post-job-benefit-list p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 0.92rem;
+    line-height: 1.55;
+}
+
+.post-job-pricing-preview {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-md);
+}
+
+.post-job-pricing-card {
+    position: relative;
+    padding: var(--space-lg);
+    border-radius: var(--radius-lg);
+    border: 1.5px solid var(--border);
+    background: var(--surface);
+    box-shadow: var(--shadow-sm);
+}
+
+.post-job-pricing-card--featured {
+    border-color: var(--brand-red);
+    background: linear-gradient(180deg, #fff 0%, #fff8f8 100%);
+}
+
+.post-job-pricing-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--brand-red);
+    background: var(--brand-red-light);
+    padding: 4px 8px;
+    border-radius: var(--radius-pill);
+}
+
+.post-job-pricing-amount {
+    display: block;
+    font-size: 1.75rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+}
+
+.post-job-pricing-term {
+    display: block;
+    margin-top: 4px;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.post-job-form-panel {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    padding: var(--space-xl);
+}
+
+.post-job-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+.post-job-form label {
+    margin-top: var(--space-xs);
+    font-weight: 600;
+    font-size: 0.9375rem;
+}
+
+.post-job-optional {
+    font-weight: 500;
+    color: var(--text-muted);
+}
+
+.post-job-form input[type="text"],
+.post-job-form input[type="email"],
+.post-job-form textarea {
+    width: 100%;
+    padding: 0.75rem 0.9rem;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-md);
+    font: inherit;
+    box-sizing: border-box;
+    background: #fff;
+}
+
+.post-job-form textarea {
+    resize: vertical;
+    min-height: 96px;
+}
+
+.post-job-form input:focus,
+.post-job-form textarea:focus {
+    outline: none;
+    border-color: var(--brand-red);
+    box-shadow: 0 0 0 3px rgba(229, 57, 53, 0.12);
+}
+
+.post-job-pricing-fieldset {
+    margin: var(--space-md) 0 0;
+    padding: 0;
+    border: none;
+}
+
+.post-job-pricing-fieldset legend {
+    font-weight: 600;
+    font-size: 0.9375rem;
+    margin-bottom: var(--space-sm);
+}
+
+.post-job-pricing-option {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    padding: var(--space-md);
+    margin-bottom: var(--space-sm);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.post-job-pricing-option:hover {
+    border-color: #d0d5dd;
+    background: var(--surface-muted);
+}
+
+.post-job-pricing-option input {
+    margin: 0;
+    accent-color: var(--brand-red);
+}
+
+.post-job-pricing-option:has(input:checked) {
+    border-color: var(--brand-red);
+    background: var(--brand-red-light);
+}
+
+.post-job-pricing-option-body {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+}
+
+.post-job-pricing-option-price {
+    font-size: 1.125rem;
+    font-weight: 800;
+}
+
+.post-job-pricing-option-label {
+    color: var(--text-secondary);
+    font-size: 0.9375rem;
+}
+
+.post-job-submit {
+    margin-top: var(--space-md);
+}
+
+.post-job-note {
+    margin: var(--space-sm) 0 0;
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    line-height: 1.55;
+    text-align: center;
+}
+
+.post-job-form-message {
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-sm);
+}
+
+.post-job-form-message--success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.post-job-form-message--error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.post-job-honeypot {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+}
+
+.topnav-box-item--post-job {
+    color: var(--brand-red);
+}
+
+.topnav-box-item--post-job:hover,
+.topnav-box-item--active.topnav-box-item--post-job {
+    background: var(--brand-red-light);
+    color: var(--brand-red-dark);
+}
+
+@media (max-width: 900px) {
+    .post-job-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .post-job-pricing-preview {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 640px) {
+    .post-job-form-panel {
+        padding: var(--space-lg);
+    }
+
+    .post-job-pricing-preview {
+        grid-template-columns: 1fr;
+    }
+
+    .topnav-box-item {
+        padding: 6px 10px;
+        font-size: 0.75rem;
+    }
+}

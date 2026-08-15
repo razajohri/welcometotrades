@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>{{ seo_title }}</title>
+    {% include '_seo_head.html' %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
+</head>
+<body class="subscribe-page">
+    <header class="app-topbar">
+        <div class="app-topbar-inner">
+            <a href="/" class="app-topbar-brand">
+                <img src="{{ url_for('static', filename='logo.svg') }}" alt="Welcome to Trades" class="app-topbar-logo">
+                <span class="app-topbar-title">Welcome to Trades</span>
+            </a>
+        </div>
+    </header>
+
+    <main class="subscribe-main">
+        <div class="subscribe-hero">
+            <h1>Start finding 10,000+ on-site mining and trades jobs across the USA and Canada</h1>
+            {% if checkout_email %}
+            <p class="subscribe-email-note">Continuing as <strong>{{ checkout_email }}</strong> . <a href="{{ url_for('access') }}">Change email</a></p>
+            {% endif %}
+        </div>
+
+        {% if message %}
+        <div class="subscribe-alert-wrap">
+            <div class="alert alert-success">{{ message }}</div>
+        </div>
+        {% endif %}
+
+        {% if error %}
+        <div class="subscribe-alert-wrap">
+            <div class="alert alert-error">{{ error }}</div>
+        </div>
+        {% endif %}
+
+        <div class="pricing-grid">
+            {% for plan in plans %}
+            <form method="POST" class="pricing-plan-card pricing-plan-card--{{ plan.key }}{% if plan.key == 'yearly' %} pricing-plan-card--featured{% endif %}">
+                <input type="hidden" name="plan" value="{{ plan.key }}">
+
+                <div class="pricing-plan-badge-row">
+                    {% if plan.badge %}
+                    <span class="pricing-plan-badge">{{ plan.badge }}</span>
+                    {% endif %}
+                </div>
+
+                <h2 class="pricing-plan-title">{{ plan.title }}</h2>
+
+                <div class="pricing-plan-price">
+                    {% if plan.compare_at %}
+                    <span class="pricing-plan-compare">{{ plan.compare_at }}</span>
+                    {% endif %}
+                    <span class="pricing-plan-amount">{{ plan.price }}</span>
+                    <span class="pricing-plan-interval">/ {{ plan.interval_label }}</span>
+                </div>
+
+                <ul class="pricing-plan-features">
+                    {% for feature in plan.features %}
+                    <li>{{ feature }}</li>
+                    {% endfor %}
+                </ul>
+
+                <button type="submit" class="btn btn-primary btn-lg btn-block pricing-plan-cta">
+                    {{ plan.button_label }}
+                </button>
+            </form>
+            {% endfor %}
+        </div>
+
+        <p class="subscribe-trust">Cancel anytime</p>
+    </main>
+</body>
+</html>

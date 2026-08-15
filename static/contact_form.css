@@ -1,0 +1,99 @@
+.contact-form-block {
+    margin-top: 1.5rem;
+}
+
+.contact-form-block .contact-form,
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    max-width: 520px;
+    width: 100%;
+}
+
+.contact-form-block label,
+.contact-form label {
+    display: block;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.contact-form-block input,
+.contact-form-block textarea,
+.contact-form input[type="email"],
+.contact-form input[type="text"]:not([name="website"]),
+.contact-form textarea {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    padding: 0.75rem 0.9rem;
+    border: 1px solid #d0d5dd;
+    border-radius: 8px;
+    font: inherit;
+    font-size: 16px;
+    box-sizing: border-box;
+    min-height: 48px;
+}
+
+.contact-form-block textarea,
+.contact-form textarea {
+    min-height: 140px;
+    resize: vertical;
+}
+
+.contact-form-block input:focus,
+.contact-form-block textarea:focus,
+.contact-form input:focus,
+.contact-form textarea:focus {
+    outline: none;
+    border-color: var(--brand-red);
+    box-shadow: 0 0 0 3px rgba(229, 57, 53, 0.15);
+}
+
+.contact-form-block .contact-submit,
+.contact-form .contact-submit {
+    align-self: flex-start;
+    background: var(--brand-red);
+    color: #fff;
+    border: none;
+    border-radius: 999px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.contact-form-block .contact-submit:hover:not(:disabled),
+.contact-form .contact-submit:hover:not(:disabled) {
+    background: var(--brand-red-dark);
+}
+
+.contact-form-block .contact-submit:disabled,
+.contact-form .contact-submit:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.contact-form-block .contact-note,
+.contact-form .contact-note {
+    font-size: 0.9rem;
+    color: #667085;
+}
+
+.contact-message {
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    margin-bottom: 0.25rem;
+    text-align: left;
+}
+
+.contact-message--success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.contact-message--error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}

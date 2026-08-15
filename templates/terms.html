@@ -1,0 +1,71 @@
+{% extends "legal_base.html" %}
+
+{% block content %}
+<h1>Terms of Service</h1>
+<p class="legal-meta">Last updated: June 18, 2026</p>
+<p class="legal-lead">These Terms of Service ("Terms") govern your use of Welcome to Trades at welcometotrades.com. By creating an account, purchasing access, or using the site, you agree to these Terms.</p>
+
+<section class="legal-section">
+    <h2>1. The service</h2>
+    <p>Welcome to Trades provides a curated database of on-site mining and trades job listings across the USA and Canada. We aggregate and verify listings to save you time, but we are not an employer and do not guarantee hiring outcomes.</p>
+    <p>Job listings link to third-party employer sites. We are not responsible for the accuracy, availability, or content of external job postings after you leave our platform.</p>
+</section>
+
+<section class="legal-section">
+    <h2>2. Lifetime access & payment</h2>
+    <ul>
+        <li><strong>Price:</strong> $24.99 CAD one-time fee for lifetime access (unless otherwise stated at checkout)</li>
+        <li><strong>No recurring subscription</strong> is required for standard lifetime access</li>
+        <li>Payments are processed by Stripe; by paying, you also agree to Stripe's terms where applicable</li>
+        <li>Access is tied to the email account you use to register</li>
+    </ul>
+</section>
+
+<section class="legal-section">
+    <h2>3. Refunds</h2>
+    <p>Because lifetime access delivers immediate digital access to our job database, purchases are generally final. If you experience a technical issue, duplicate charge, or cannot access the service after payment, contact us within <strong>7 days</strong> at <a href="mailto:{{ support_email }}">{{ support_email }}</a>. Refunds are granted at our discretion when the service was not delivered as described.</p>
+</section>
+
+<section class="legal-section">
+    <h2>4. Acceptable use</h2>
+    <p>You agree not to:</p>
+    <ul>
+        <li>Scrape, crawl, or bulk-download job listings or site content without permission</li>
+        <li>Share your account credentials with others or resell access</li>
+        <li>Use the service for unlawful purposes or to spam employers</li>
+        <li>Attempt to bypass paywalls, authentication, or security measures</li>
+        <li>Submit false information through contact or registration forms</li>
+    </ul>
+    <p>We may suspend or terminate accounts that violate these rules.</p>
+</section>
+
+<section class="legal-section">
+    <h2>5. Job listing disclaimer</h2>
+    <p>We work to show active mining and trades roles across the USA and Canada, but listings can expire, change, or contain errors from the original source. Always verify role details, certifications, location, and compensation directly with the employer before applying. Welcome to Trades does not endorse any particular employer.</p>
+</section>
+
+<section class="legal-section">
+    <h2>6. Intellectual property</h2>
+    <p>The Welcome to Trades name, logo, site design, and original content are owned by us or our licensors. Job titles and descriptions remain the property of their respective employers. You may use the service for personal job searching only.</p>
+</section>
+
+<section class="legal-section">
+    <h2>7. Limitation of liability</h2>
+    <p>The service is provided "as is." To the fullest extent permitted by law, Welcome to Trades is not liable for indirect, incidental, or consequential damages arising from your use of the site, including lost income, missed opportunities, or reliance on job listings. Our total liability for any claim related to the service is limited to the amount you paid for lifetime access in the twelve months before the claim.</p>
+</section>
+
+<section class="legal-section">
+    <h2>8. Changes to the service or Terms</h2>
+    <p>We may update features, pricing for new customers, or these Terms. Material changes will be reflected by updating the date above. Continued use after changes constitutes acceptance.</p>
+</section>
+
+<section class="legal-section">
+    <h2>9. Governing law</h2>
+    <p>These Terms are governed by the laws of Canada and the province in which Welcome to Trades operates, without regard to conflict-of-law principles. Disputes will be handled in the applicable courts of that province, unless consumer protection laws in your province require otherwise.</p>
+</section>
+
+<section class="legal-section">
+    <h2>10. Contact</h2>
+    <p>Questions about these Terms? Visit <a href="{{ url_for('support') }}">Support</a> or email <a href="mailto:{{ support_email }}">{{ support_email }}</a>.</p>
+</section>
+{% endblock %}

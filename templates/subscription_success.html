@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ seo_title }}</title>
+    {% include '_seo_head.html' %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
+</head>
+<body class="auth-page">
+    <header class="app-topbar">
+        <div class="app-topbar-inner">
+            <a href="/" class="app-topbar-brand">
+                <img src="{{ url_for('static', filename='logo.svg') }}" alt="Welcome to Trades" class="app-topbar-logo">
+                <span class="app-topbar-title">Welcome to Trades</span>
+            </a>
+        </div>
+    </header>
+
+    <main class="auth-main">
+        <div class="auth-card">
+            <img src="{{ url_for('static', filename='logo.svg') }}" alt="" class="auth-card-logo">
+            <h1>{% if payment_confirmed %}You're all set!{% else %}Payment pending{% endif %}</h1>
+            <p class="subtitle">
+                {% if payment_confirmed %}
+                    Thank you for subscribing. You now have full access to search mining and trades jobs across the USA and Canada.
+                {% else %}
+                    We couldn't confirm your payment yet. If you were charged, try again in a moment or contact support.
+                {% endif %}
+            </p>
+
+            {% if payment_confirmed %}
+            <div class="alert alert-success">Welcome to Trades Pro activated</div>
+            {% else %}
+            <div class="alert alert-error">Payment not yet confirmed</div>
+            {% endif %}
+
+            {% if payment_confirmed and sign_in_link_sent and checkout_email %}
+            <p class="subtitle">We sent a sign-in link to <strong>{{ checkout_email }}</strong>. Open it to access your jobs.</p>
+            <a href="{{ url_for('login', email=checkout_email) }}" class="btn btn-primary btn-lg btn-block">Open sign-in page</a>
+            {% elif payment_confirmed %}
+            <a href="/search" class="btn btn-primary btn-lg btn-block">Start searching jobs</a>
+            {% endif %}
+            <p class="auth-footer-link"><a href="/">← Back to home</a></p>
+        </div>
+    </main>
+</body>
+</html>

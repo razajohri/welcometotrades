@@ -1,0 +1,51 @@
+{% set pagination_pages = get_pagination_pages(page, total_pages) %}
+
+<div class="pagination-toolbar">
+    <div class="pagination-controls">
+        <nav class="pagination" aria-label="Pagination">
+            <div class="pagination-content">
+                <div class="pagination-item pagination-item--nav">
+                    <button type="button" class="pagination-previous" onclick="changePage('{{ page - 1 }}')" {% if page <= 1 %}disabled{% endif %} aria-label="Previous page">
+                        <svg class="pagination-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        <span class="pagination-nav-label">Previous</span>
+                    </button>
+                </div>
+
+                <span class="pagination-mobile-status" aria-live="polite">
+                    Page {{ page }} of {{ total_pages }}
+                </span>
+
+                <div class="pagination-pages">
+                {% for item in pagination_pages %}
+                <div class="pagination-item">
+                    {% if item == 'ellipsis' %}
+                    <span class="pagination-ellipsis" aria-hidden="true">…</span>
+                    {% else %}
+                    <button type="button" class="pagination-link{% if item == page %} is-active{% endif %}" onclick="changePage('{{ item }}')" {% if item == page %}aria-current="page"{% endif %} aria-label="Page {{ item }}">
+                        {{ item }}
+                    </button>
+                    {% endif %}
+                </div>
+                {% endfor %}
+                </div>
+
+                <div class="pagination-item pagination-item--nav">
+                    <button type="button" class="pagination-next" onclick="changePage('{{ page + 1 }}')" {% if page >= total_pages %}disabled{% endif %} aria-label="Next page">
+                        <span class="pagination-nav-label">Next</span>
+                        <svg class="pagination-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <label class="pagination-per-page">
+            <span class="pagination-per-page-label">Show</span>
+            <select class="pagination-select" onchange="changeResultsPerPage(this.value)" aria-label="Results per page">
+                <option value="20" {% if results_per_page == 20 %}selected{% endif %}>20</option>
+                <option value="50" {% if results_per_page == 50 %}selected{% endif %}>50</option>
+                <option value="100" {% if results_per_page == 100 %}selected{% endif %}>100</option>
+            </select>
+            <span class="pagination-per-page-label">per page</span>
+        </label>
+    </div>
+</div>

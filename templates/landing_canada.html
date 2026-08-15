@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <title>{{ seo_title }}</title>
+    {% include '_seo_head.html' %}
+    {% include '_homepage_schema.html' %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='landing-taste.css') }}?v=herodown1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='contact_form.css') }}?v=herodown1">
+    {% if recaptcha_enabled and recaptcha_site_key %}
+    <script src="https://www.google.com/recaptcha/api.js?render={{ recaptcha_site_key }}" async defer></script>
+    {% endif %}
+    <script>
+    (function () {
+        if (location.hostname === 'welcometotrades.com') {
+            location.replace('https://www.welcometotrades.com' + location.pathname + location.search + location.hash);
+        }
+    })();
+    </script>
+</head>
+<body>
+    <div class="topbar">
+        <div class="topbar-inner">
+            <div class="left logo">
+                <a href="/" style="display:flex; align-items:center; gap:10px; text-decoration:none;">
+                    <img class="logo-img" src="{{ url_for('static', filename='logo.svg') }}" alt="Welcome to Trades" width="40" height="40">
+                    <span class="topbar-brand-name">Welcome to Trades</span>
+                </a>
+            </div>
+            <div class="right actions">
+                <a href="/post-a-job" class="topbar-post-job">Post a Job</a>
+                <a href="{{ url_for('login') }}" class="btn-signin">Sign in</a>
+                <a href="/search" class="btn-access">Search Jobs</a>
+            </div>
+        </div>
+    </div>
+    <div class="hero">
+        <div class="hero-media" aria-hidden="true">
+            <img src="{{ url_for('static', filename='hero-mine.jpg') }}" alt="" width="1600" height="900" decoding="async" fetchpriority="high">
+        </div>
+        <div class="hero-inner">
+        <div class="header">
+        <p class="brand-mark">Welcome to <span>Trades</span></p>
+        <h1 class="header-title">On-site mining &amp; trades jobs across the USA &amp; Canada</h1>
+        <p class="header-sub">Haul truck, underground, mill, and trades roles. Free to search.</p>
+        </div>
+        <div class="search-box">
+            <div class="search-panel">
+                <div class="search-hint">Search haul truck, underground, millwright, electrician, and more.</div>
+                <div class="landing-pill" role="search">
+                <span class="pill-icon" aria-hidden="true">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="11" cy="11" r="7" stroke="#1E223D" stroke-width="2" fill="none" />
+                        <line x1="21" y1="21" x2="16.65" y2="16.65" stroke="#1E223D" stroke-width="2" stroke-linecap="round" />
+                    </svg>
+                </span>
+                <input id="landing-search-input" class="landing-pill-input" type="text" placeholder="e.g. Haul Truck Operator" autocomplete="off">
+                <button type="button" class="landing-pill-button" aria-label="Search">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right:8px;">
+                        <circle cx="11" cy="11" r="7" stroke="#fff" stroke-width="2" fill="none" />
+                        <line x1="21" y1="21" x2="16.65" y2="16.65" stroke="#fff" stroke-width="2" stroke-linecap="round" />
+                    </svg>
+                    Search
+                </button>
+                <div id="filter-bubble" role="status" aria-live="polite" class="filter-bubble">
+                    <span id="filter-label"></span>
+                    <button type="button" id="remove-filter" class="remove-filter" aria-label="Remove filter">&times;</button>
+                </div>
+                <input type="hidden" id="filter-input" value="">
+            </div>
+            <div class="filter-buttons">
+                <button type="button" class="filter-btn" data-filter="Operators">+ Operators</button>
+                <button type="button" class="filter-btn" data-filter="Underground">+ Underground</button>
+                <button type="button" class="filter-btn" data-filter="Mill & Plant">+ Mill & Plant</button>
+                <button type="button" class="filter-btn" data-filter="Trades">+ Trades</button>
+                <button type="button" class="filter-btn" data-filter="Labor">+ Labor</button>
+                <button type="button" class="filter-btn" data-filter="Safety & Geology">+ Safety & Geology</button>
+            </div>
+            <div id="search-results-demo"{% if landing_preview_jobs %} class="is-visible" style="display:block"{% endif %}>
+            {% if landing_preview_jobs %}
+                {% include '_landing_job_cards.html' %}
+            {% endif %}
+            </div>
+            </div>
+        </div>
+        </div><!-- .hero-inner -->
+        <script>
+        const ACCESS_CTA_URL = "/search";
+        const searchInput = document.getElementById('landing-search-input');
+        const searchResultsDemo = document.getElementById('search-results-demo');
+        const filterInput = document.getElementById('filter-input');
+        let demoOpen = false;
+        let showingDefaults = true;
+
+        function escapeHtml(text) {
+            return String(text ?? '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+        }
+
+        // Filter button logic
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const filterBubble = document.getElementById('filter-bubble');
+        const filterLabel = document.getElementById('filter-label');
+        const removeFilterBtn = document.getElementById('remove-filter');
+
+        function selectFilter(filter) {
+            filterBtns.forEach(btn => {
+                if (btn.dataset.filter === filter) {
+                    btn.classList.add('selected');
+                } else {
+                    btn.classList.remove('selected');
+                }
+            });
+            filterInput.value = filter;
+            filterLabel.textContent = filter; // Remove '+' prefix
+            filterBubble.style.display = 'flex';
+            // adjust input padding so typed text starts to the right of the bubble
+            requestAnimationFrame(() => {
+                const bubbleRect = filterBubble.getBoundingClientRect();
+                const inputRect = searchInput.getBoundingClientRect();
+                const paddingNeeded = Math.ceil(bubbleRect.right - inputRect.left + 12);
+                searchInput.style.paddingLeft = paddingNeeded + 'px';
+            });
+        }
+
+        function clearFilter() {
+            filterBtns.forEach(btn => btn.classList.remove('selected'));
+            filterInput.value = '';
+            filterLabel.textContent = '';
+            filterBubble.style.display = 'none';
+            searchInput.style.paddingLeft = '';
+        }
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (btn.classList.contains('selected')) {
+                    clearFilter();
+                } else {
+                    selectFilter(btn.dataset.filter);
+                }
+                // Trigger search and shift view when filter is clicked
+                triggerSearch();
+                updateHeroShift();
+            });
+        });
+
+        removeFilterBtn.addEventListener('click', () => {
+            clearFilter();
+            triggerSearch();
+        });
+        function renderSkillChips(skills) {
+            if (!skills) return '';
+            const parts = String(skills).split(',').map(s => s.trim()).filter(Boolean).slice(0, 4);
+            if (!parts.length) return '';
+            return `<div class="job-demo-skills">${parts.map(p => `<span class="job-skill-chip">${escapeHtml(p)}</span>`).join('')}</div>`;
+        }
+        function demoResultsLabel(keyword, filter) {
+            if (filter) {
+                return `${filter.toLowerCase()} jobs`;
+            }
+            if (keyword) {
+                return `jobs for "${keyword}"`;
+            }
+            return 'jobs';
+        }
+        function renderDemoResults(results, options) {
+            const isDefault = options && options.isDefault;
+            if (!results || results.length === 0) {
+                searchResultsDemo.innerHTML = '<div style="color:#888; font-size:1.08rem;">No jobs found.</div>';
+                return;
+            }
+            const shown = (results || []).slice(0, 3);
+            const total = (options && typeof options.total === 'number') ? options.total : results.length;
+            const keyword = (options && options.keyword) || '';
+            const filter = (options && options.filter) || '';
+            const header = isDefault
+                ? '<div class="demo-results-header">Explore jobs</div>'
+                : `<div class="demo-results-header">Showing ${shown.length} of ${total.toLocaleString()} ${demoResultsLabel(keyword, filter)} · newest first</div>`;
+            let cardsHtml = '';
+            for (const job of shown) {
+                const title = escapeHtml(job.title || 'Trades role');
+                const company = job.company
+                    ? `<div class="job-demo-company">${escapeHtml(job.company)}</div>`
+                    : '';
+                const categoryBadge = job.category
+                    ? `<span class="job-demo-category">${escapeHtml(job.category)}</span>`
+                    : '';
+                const salary = job.compensation
+                    ? `<span class="job-demo-salary">${escapeHtml(job.compensation)}</span>`
+                    : '';
+                const skills = renderSkillChips(job.skills);
+                const snippet = (!isDefault && job.snippet)
+                    ? `<div class="job-demo-snippet">${escapeHtml(job.snippet)}</div>`
+                    : '';
+                cardsHtml += `
+                <div class="job-demo-card" onclick="window.location=ACCESS_CTA_URL">
+                    <div class="job-demo-body">
+                        <div class="job-demo-top">
+                            ${categoryBadge}
+                            <span class="job-demo-remote">On-site</span>
+                            ${salary}
+                        </div>
+                        <div class="job-demo-title">${title}</div>
+                        ${company}
+                        ${skills}
+                        ${snippet}
+                    </div>
+                    <div class="job-demo-actions">
+                        <button class="job-apply-btn" onclick="event.stopPropagation(); window.location=ACCESS_CTA_URL">Apply</button>
+                    </div>
+                </div>`;
+            }
+            searchResultsDemo.innerHTML = `${header}<div class="job-demo-list">${cardsHtml}</div><div class="demo-cta-row"><button class="demo-cta-btn" onclick="window.location=ACCESS_CTA_URL">Search mining & trades jobs</button></div>`;
+        }
+        function showSearchLoading(message) {
+            searchResultsDemo.innerHTML = `<div class="demo-results-loading">${escapeHtml(message || 'Searching jobs…')}</div>`;
+            showDemoResults();
+        }
+        function loadDefaultPreview() {
+            showingDefaults = true;
+            showSearchLoading('Loading jobs…');
+            fetch('/landing-search/default')
+                .then(r => r.json())
+                .then(data => {
+                    renderDemoResults(data.results || [], { isDefault: true });
+                    showDemoResults();
+                })
+                .catch(() => {
+                    searchResultsDemo.innerHTML = '<div style="color:#888; font-size:1.08rem;">Unable to load example jobs right now.</div>';
+                    showDemoResults();
+                });
+        }
+        function showDemoResults() {
+            searchResultsDemo.style.display = 'block';
+            searchResultsDemo.classList.add('is-visible');
+            demoOpen = true;
+        }
+        function hideDemoResults() {
+            searchResultsDemo.style.display = 'none';
+            searchResultsDemo.classList.remove('is-visible');
+            demoOpen = false;
+        }
+        function triggerSearch() {
+            const value = searchInput.value.trim();
+            const filter = filterInput.value.trim();
+            if (value === '' && filter === '') {
+                loadDefaultPreview();
+                updateHeroShift();
+                return;
+            }
+            showingDefaults = false;
+            showSearchLoading('Searching jobs…');
+            fetch('/landing-search', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ keyword: value, filter: filter })
+            })
+            .then(r => r.json())
+            .then(data => {
+                renderDemoResults(data.results, {
+                    total: data.total,
+                    keyword: value,
+                    filter: filter,
+                });
+                showDemoResults();
+                updateHeroShift();
+            })
+            .catch(() => {
+                searchResultsDemo.innerHTML = '<div style="color:#888; font-size:1.08rem;">Search is temporarily unavailable. Please try again.</div>';
+                showDemoResults();
+            });
+        }
+        // only show results on Enter key or when user clicks the search button
+        // remove automatic fetch on focus/input
+        searchInput.removeEventListener && searchInput.removeEventListener('input', triggerSearch);
+        // add Enter handler (keeps the previous behavior but ensures we control when showDemoResults runs)
+        searchInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                triggerSearch();
+                updateHeroShift();
+            }
+        });
+        // ensure the Search button triggers the same search
+        document.querySelector('.landing-pill-button').addEventListener('click', function(e){
+            e.preventDefault();
+            triggerSearch();
+            updateHeroShift();
+        });
+        // shift hero up when user is interacting with search
+        const heroEl = document.querySelector('.hero');
+        function updateHeroShift() {
+            const v = searchInput.value.trim();
+            const f = filterInput.value.trim();
+            if (v.length > 0 || f.length > 0) {
+                heroEl.classList.add('shift-up');
+            } else {
+                heroEl.classList.remove('shift-up');
+            }
+        }
+        // Don't shift on input - only shift when search is triggered (Enter or Search button)
+        // searchInput.addEventListener('input', updateHeroShift); // REMOVED
+        // blur logic removed since we don't want automatic shift on typing
+        // searchInput.addEventListener('blur', function() { setTimeout(updateHeroShift, 180); }); // REMOVED
+        document.addEventListener('click', function(e) {
+            if (searchInput.contains(e.target) || searchResultsDemo.contains(e.target)) {
+                return;
+            }
+            if (e.target.closest && (e.target.closest('.filter-btn') || e.target.closest('.filter-bubble'))) {
+                return;
+            }
+            const value = searchInput.value.trim();
+            const filter = filterInput.value.trim();
+            if (value === '' && filter === '') {
+                return;
+            }
+            hideDemoResults();
+        });
+        if (!searchResultsDemo.querySelector('.job-demo-list')) {
+            loadDefaultPreview();
+        } else {
+            demoOpen = true;
+            showingDefaults = true;
+        }
+        </script>
+    </div> <!-- .hero -->
+    <div class="proof-strip">
+        <div class="header-social" aria-hidden="true">
+            <img src="/static/client_a.webp" alt="">
+            <img src="/static/client_b.webp" alt="">
+            <img src="/static/client_c.webp" alt="">
+            <img src="/static/client_d.webp" alt="">
+        </div>
+        <span class="header-rating" aria-hidden="true">★★★★★</span>
+        <p class="header-loved">On-site roles for mining and trades workers</p>
+    </div>
+    <!-- main-section: features + reviews -->
+    <div class="main-section">
+    <div class="features">
+        <h2 class="compare-heading">Built for site work</h2>
+        <div class="feature">
+            <div class="feature-index" aria-hidden="true">01</div>
+            <div class="feature-text">Real <span class="red">on-site mining and trades</span> roles, not remote desk jobs.</div>
+        </div>
+        <div class="feature">
+            <div class="feature-index" aria-hidden="true">02</div>
+            <div class="feature-text">Haul truck, underground, mill, and trades postings <span class="red">updated daily</span>.</div>
+        </div>
+        <div class="feature">
+            <div class="feature-index" aria-hidden="true">03</div>
+            <div class="feature-text">Many site roles never hit big boards. We <span class="red">surface</span> hard-to-find mining and trades jobs.</div>
+        </div>
+    </div>
+    <div class="compare-section">
+        <h2 class="compare-heading">Skip the crowded job boards</h2>
+        <div class="compare-grid">
+            <div class="compare-card compare-card--them">
+                <h3 class="compare-card-title">LinkedIn / Indeed</h3>
+                <p class="compare-quote">“Posted 1 hour ago, over 200 applicants.”</p>
+                <ul class="compare-list">
+                    <li><span class="compare-icon compare-icon--bad" aria-hidden="true">✕</span><span>Low reply rate for interviews</span></li>
+                    <li><span class="compare-icon compare-icon--bad" aria-hidden="true">✕</span><span>Advertised jobs = low quality jobs</span></li>
+                    <li><span class="compare-icon compare-icon--bad" aria-hidden="true">✕</span><span>Recruiter fees. Companies prefer direct applicants</span></li>
+                    <li><span class="compare-icon compare-icon--bad" aria-hidden="true">✕</span><span>Fake jobs</span></li>
+                </ul>
+            </div>
+            <div class="compare-card compare-card--us">
+                <h3 class="compare-card-title">Welcome to Trades</h3>
+                <p class="compare-quote">Less competition.</p>
+                <ul class="compare-list">
+                    <li><span class="compare-icon compare-icon--good" aria-hidden="true">✓</span><span>Higher reply rate for interviews</span></li>
+                    <li><span class="compare-icon compare-icon--good" aria-hidden="true">✓</span><span>Jobs that aren't being advertised</span></li>
+                    <li><span class="compare-icon compare-icon--good" aria-hidden="true">✓</span><span>Apply directly to the hiring team</span></li>
+                    <li><span class="compare-icon compare-icon--good" aria-hidden="true">✓</span><span>Real jobs</span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="reviews-section">
+        <div class="reviews-header">
+            <h2 class="reviews-title">Reviews</h2>
+            <div class="reviews-rating-row" aria-label="Rated 4.75 out of 5 stars">
+                <span class="reviews-stars" aria-hidden="true">★★★★★</span>
+                <span class="reviews-score">4.75/5</span>
+            </div>
+            <div class="reviews-social-avatars" aria-hidden="true">
+                <img src="/static/client_a.webp" alt="">
+                <img src="/static/client_b.webp" alt="">
+                <img src="/static/client_c.webp" alt="">
+                <img src="/static/client_d.webp" alt="">
+            </div>
+            <p class="reviews-trust-line">Built for people who work on site</p>
+        </div>
+        <div class="reviews-grid">
+            <div class="review-card">
+                <img src="/static/darian.webp" class="review-portrait" alt="Darian" loading="lazy" decoding="async" fetchpriority="low">
+                <div class="review-name">Darian Mathieson</div>
+                <div class="review-country">Saskatoon, SK</div>
+                <div class="review-body">I was tired of scrolling Indeed for haul truck jobs that were already filled. Welcome to Trades surfaces real mining roles in Saskatchewan and across Canada.</div>
+            </div>
+            <div class="review-card">
+                <img src="/static/kiana.webp" class="review-portrait" alt="Kiana" loading="lazy" decoding="async" fetchpriority="low">
+                <div class="review-name">Kiana Sieg</div>
+                <div class="review-country">Toronto, ON</div>
+                <div class="review-body">Finally a job board built for trades workers, not desk jobs. I found underground and millwright listings I never saw on LinkedIn, and heard back from multiple employers.</div>
+            </div>
+            <div class="review-card">
+                <img src="/static/andrey.webp" class="review-portrait" alt="Andrey" loading="lazy" decoding="async" fetchpriority="low">
+                <div class="review-name">Andrey Kuksin</div>
+                <div class="review-country">Edmonton, AB</div>
+                <div class="review-body">I love how clean and easy to navigate the site is. No spam or outdated jobs. I’ve already recommended it to friends in the trades looking for on-site work.</div>
+            </div>
+        </div>
+    </div>
+    </div> <!-- .main-section -->
+    <!-- third-section: signup, cta, faq, contact -->
+    <div class="third-section">
+        <div class="third-inner">
+            <div class="third-content">
+            <h2 class="signup-heading">Search mining &amp; trades jobs free.</h2>
+
+            <div class="cta-section">
+                <div class="access-box">
+                    <div class="access-price">Free to search</div>
+                    <ul class="access-features">
+                        <li>10,000+ verified on-site roles</li>
+                        <li>Constantly updated with new jobs</li>
+                        <li>USA &amp; Canada mining &amp; trades</li>
+                    </ul>
+                    <a href="/search" class="access-btn">Search jobs</a>
+                </div>
+            </div>
+            <section class="homepage-faq-section" id="faq" aria-labelledby="faq-heading">
+                <h2 class="compare-heading" id="faq-heading">Frequently asked questions</h2>
+                <div class="guide-faq">
+                    {% for item in homepage_faq %}
+                    <details>
+                        <summary>{{ item.question }}</summary>
+                        <p>{{ item.answer }}</p>
+                    </details>
+                    {% endfor %}
+                </div>
+                <p class="homepage-faq-more">
+                    <a href="{{ url_for('guides_remote_jobs_canada') }}#faq">More questions in our mining &amp; trades jobs guide →</a>
+                </p>
+            </section>
+            </div>
+        </div>
+    <section class="creator-section" aria-labelledby="creator-heading">
+        <div class="creator-card">
+            <div class="creator-profile">
+                <img src="{{ url_for('static', filename='rigtimmins.jpg') }}" alt="Rig, @rigtimmins on TikTok" class="creator-photo" width="120" height="120" loading="lazy" decoding="async" fetchpriority="low">
+                <a href="https://www.tiktok.com/@rigtimmins" class="creator-tiktok-btn" target="_blank" rel="noopener noreferrer">TikTok @rigtimmins</a>
+            </div>
+            <div class="creator-content">
+                <h2 class="creator-title" id="creator-heading">Rig | Worksite Content</h2>
+                <p class="creator-role">@rigtimmins on TikTok</p>
+                <p class="creator-story">Documenting the dirt, one post at a time. Mining and trades content from the worksite, and Welcome to Trades for real on-site jobs across the USA and Canada.</p>
+                <div class="creator-stats">
+                    <div>
+                        <div class="creator-stat-value">10.2K</div>
+                        <div class="creator-stat-label">Followers</div>
+                    </div>
+                    <div>
+                        <div class="creator-stat-value">1.1M</div>
+                        <div class="creator-stat-label">Likes</div>
+                    </div>
+                    <div>
+                        <div class="creator-stat-value">84</div>
+                        <div class="creator-stat-label">Following</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="contact-section" id="contact">
+        <div class="contact-wrapper">
+            <div class="contact-title">Contact us</div>
+            <div class="contact-subtitle">We'd love to talk about how we can help you.</div>
+            <div class="contact-form-block">
+                {% include '_contact_form.html' %}
+            </div>
+        </div>
+    </div>
+    
+    <script src="{{ url_for('static', filename='contact_form.js') }}" defer></script>
+    </div>
+    {% include '_footer.html' %}
+</body>
+</html>

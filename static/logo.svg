@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Welcome to Trades">
+  <!-- Editable open mark for Welcome to Trades: hard hat + pick + gear -->
+  <circle cx="64" cy="64" r="64" fill="#1E223D"/>
+  <circle cx="64" cy="64" r="58" fill="none" stroke="#F54F1B" stroke-width="7"/>
+  <!-- hard hat -->
+  <path fill="#FFFFFF" d="M40 58c1.5-14 11-24 24-24s22.5 10 24 24H40z"/>
+  <path fill="#FFFFFF" d="M32 58h64c1.5 0 3 1.2 3 3v2c0 1.8-1.5 3-3 3H32c-1.5 0-3-1.2-3-3v-2c0-1.8 1.5-3 3-3z"/>
+  <rect x="60" y="38" width="8" height="12" rx="2" fill="#1E223D"/>
+  <!-- pick head -->
+  <path fill="#FFFFFF" d="M48 78c8-10 20-16 32-16 4 0 8 .6 12 1.8L78 78H48z"/>
+  <!-- gear -->
+  <g fill="#FFFFFF" transform="translate(64 96)">
+    <circle r="11" fill="#1E223D"/>
+    <circle r="7.5" fill="none" stroke="#FFFFFF" stroke-width="3.5"/>
+    <g id="tooth">
+      <rect x="-2.2" y="-14" width="4.4" height="5" rx="1"/>
+    </g>
+    <use href="#tooth" transform="rotate(45)"/>
+    <use href="#tooth" transform="rotate(90)"/>
+    <use href="#tooth" transform="rotate(135)"/>
+    <use href="#tooth" transform="rotate(180)"/>
+    <use href="#tooth" transform="rotate(225)"/>
+    <use href="#tooth" transform="rotate(270)"/>
+    <use href="#tooth" transform="rotate(315)"/>
+    <circle r="3.2" fill="#FFFFFF"/>
+  </g>
+</svg>

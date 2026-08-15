@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>{{ seo_title }}</title>
+    {% include '_seo_head.html' %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
+</head>
+<body class="search-page">
+    <header class="app-topbar">
+        <div class="app-topbar-inner">
+            <a href="/" class="app-topbar-brand">
+                <img src="{{ url_for('static', filename='logo.svg') }}" alt="Welcome to Trades" class="app-topbar-logo">
+                <span class="app-topbar-title">Welcome to Trades</span>
+            </a>
+            {% include '_mobile_account_link.html' %}
+            <div class="app-topbar-actions">
+                {% include '_topnav_box.html' %}
+            </div>
+        </div>
+    </header>
+
+    <div class="search-content search-content--with-topbar">
+        <h1 class="results-page-title">Results for “{{ keyword }}”</h1>
+
+        <form id="resultsForm" method="POST">
+            <input type="hidden" name="keyword" value="{{ keyword }}">
+            <input type="hidden" id="page" name="page" value="{{ page|default(1) }}">
+            <input type="hidden" id="results_per_page" name="results_per_page" value="{{ results_per_page|default(20) }}">
+        </form>
+
+        {% if page_jobs is defined and page_jobs is not none and page_jobs|length > 0 %}
+        {% include '_results_summary.html' %}
+        <ul class="job-list">
+            {% for _, job in page_jobs.iterrows() %}
+            <li class="job-card" data-job-url="{{ job['job_url_direct'] }}">
+                <div class="job-card-main">
+                    <a class="job-title job-title-link job-visit-link" href="{{ job['job_url_direct'] }}" target="_blank" rel="noopener">{{ job['title'] }}</a>
+                    <div class="job-company">{{ job['company'] }}</div>
+                    {% if job.get('compensation') and job['compensation'] %}
+                    <div class="job-compensation">{{ job['compensation'] }}</div>
+                    {% endif %}
+                </div>
+                <div class="job-card-action">
+                    <a class="job-apply-btn job-visit-link" href="{{ job['job_url_direct'] }}" target="_blank" rel="noopener">Apply</a>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+        {% include '_pagination.html' %}
+        {% else %}
+        {% include '_results_summary.html' %}
+        <div class="empty-state">
+            <div class="empty-state-icon" aria-hidden="true">🔍</div>
+            <h2>No jobs found</h2>
+            <p>Try a different search term or <a href="/search">start a new search</a>.</p>
+        </div>
+        {% endif %}
+    </div>
+
+    {% include '_resume_modal.html' %}
+    {% include '_footer.html' %}
+
+    <script src="{{ url_for('static', filename='visited_jobs.js') }}"></script>
+    <script>
+        function changePage(page) {
+            document.getElementById('page').value = page;
+            document.getElementById('resultsForm').submit();
+        }
+        function changeResultsPerPage(val) {
+            document.getElementById('results_per_page').value = val;
+            document.getElementById('page').value = 1;
+            document.getElementById('resultsForm').submit();
+        }
+    </script>
+</body>
+</html>

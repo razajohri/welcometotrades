@@ -1,0 +1,37 @@
+<div class="demo-results-header">Explore jobs</div>
+<div class="job-demo-list">
+{% for job in landing_preview_jobs %}
+    <div class="job-demo-card" onclick="window.location='{{ access_cta_url }}'">
+        <div class="job-demo-body">
+            <div class="job-demo-top">
+                {% if job.category %}
+                <span class="job-demo-category">{{ job.category }}</span>
+                {% endif %}
+                <span class="job-demo-remote">On-site</span>
+                {% if job.compensation %}
+                <span class="job-demo-salary">{{ job.compensation }}</span>
+                {% endif %}
+            </div>
+            <div class="job-demo-title">{{ job.title or 'Trades role' }}</div>
+            {% if job.company %}
+            <div class="job-demo-company">{{ job.company }}</div>
+            {% endif %}
+            {% if job.skills %}
+            <div class="job-demo-skills">
+                {% for skill in job.skills.split(',')[:4] %}
+                    {% if skill.strip() %}
+                    <span class="job-skill-chip">{{ skill.strip() }}</span>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+        <div class="job-demo-actions">
+            <button class="job-apply-btn" type="button" onclick="event.stopPropagation(); window.location='{{ access_cta_url }}'">Apply</button>
+        </div>
+    </div>
+{% endfor %}
+</div>
+<div class="demo-cta-row">
+    <button class="demo-cta-btn" type="button" onclick="window.location='{{ access_cta_url }}'">Search mining &amp; trades jobs</button>
+</div>

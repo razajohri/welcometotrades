@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>{{ seo_title }}</title>
+    {% include '_seo_head.html' %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
+</head>
+<body class="auth-page">
+    <header class="app-topbar">
+        <div class="app-topbar-inner">
+            <a href="/" class="app-topbar-brand">
+                <img src="{{ url_for('static', filename='logo.svg') }}" alt="Welcome to Trades" class="app-topbar-logo">
+                <span class="app-topbar-title">Welcome to Trades</span>
+            </a>
+            {% include '_mobile_account_link.html' %}
+            <div class="app-topbar-actions">
+                {% include '_topnav_box.html' %}
+            </div>
+        </div>
+    </header>
+
+    <main class="auth-main">
+        <div class="auth-card account-card">
+            <img src="{{ url_for('static', filename='logo.svg') }}" alt="" class="auth-card-logo">
+            <h1>Your account</h1>
+            <p class="subtitle">Manage your membership and account details.</p>
+
+            {% if cancel_message %}
+            <div class="alert alert-success">{{ cancel_message }}</div>
+            {% endif %}
+            {% if cancel_error %}
+            <div class="alert alert-error">{{ cancel_error }}</div>
+            {% endif %}
+            {% if alert_message %}
+            <div class="alert alert-success">{{ alert_message }}</div>
+            {% endif %}
+
+            <dl class="account-details">
+                <div class="account-row">
+                    <dt>Email</dt>
+                    <dd>{{ current_user.email }}</dd>
+                </div>
+                {% if profile.get('is_admin') %}
+                <div class="account-row">
+                    <dt>Role</dt>
+                    <dd>Administrator</dd>
+                </div>
+                {% endif %}
+                <div class="account-row">
+                    <dt>Access</dt>
+                    <dd>
+                        <span class="account-badge account-badge--{{ status_tone }}">{{ status_label }}</span>
+                    </dd>
+                </div>
+                {% if member_since %}
+                <div class="account-row">
+                    <dt>Member since</dt>
+                    <dd>{{ member_since }}</dd>
+                </div>
+                {% endif %}
+                {% if renews_on and status_tone == 'active' and subscription and subscription.get('status') not in ['lifetime'] %}
+                <div class="account-row">
+                    <dt>{% if cancel_scheduled %}Access until{% else %}Renews on{% endif %}</dt>
+                    <dd>{{ renews_on }}</dd>
+                </div>
+                {% endif %}
+                {% if cancel_scheduled %}
+                <div class="account-row">
+                    <dt>Cancellation</dt>
+                    <dd>Scheduled at end of billing period</dd>
+                </div>
+                {% endif %}
+                {% if has_access and job_alerts_available %}
+                <div class="account-row">
+                    <dt>Job alerts</dt>
+                    <dd>
+                        <form method="POST" action="{{ url_for('update_job_alerts') }}" class="account-alert-form">
+                            <label class="account-alert-toggle">
+                                <input type="checkbox" name="enabled" value="1" {% if job_alerts_enabled %}checked{% endif %} onchange="this.form.submit()">
+                                <span>Daily email when new jobs are posted</span>
+                            </label>
+                        </form>
+                    </dd>
+                </div>
+                {% endif %}
+            </dl>
+
+            <div class="account-actions">
+                {% if status_tone == 'active' %}
+                <a href="{{ url_for('index') }}" class="btn btn-primary btn-block">Search jobs</a>
+                {% else %}
+                <a href="{{ url_for('subscribe') }}" class="btn btn-primary btn-block">Get access</a>
+                {% endif %}
+                {% if can_cancel %}
+                <form method="POST" action="{{ url_for('cancel_subscription') }}" onsubmit="return confirm('Cancel your subscription at the end of this billing period?');">
+                    <button type="submit" class="btn btn-outline btn-block btn-danger-outline">Cancel subscription</button>
+                </form>
+                {% endif %}
+                <a href="{{ url_for('support') }}" class="btn btn-outline btn-block">Support</a>
+                <a href="{{ url_for('logout') }}" class="btn btn-outline btn-block">Sign out</a>
+            </div>
+        </div>
+    </main>
+
+    {% include '_resume_modal.html' %}
+    {% include '_footer.html' %}
+</body>
+</html>
