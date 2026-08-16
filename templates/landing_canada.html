@@ -39,7 +39,7 @@
             <div class="right actions">
                 <a href="/post-a-job" class="topbar-post-job">Post a Job</a>
                 <a href="{{ url_for('login') }}" class="btn-signin">Sign in</a>
-                <a href="/search" class="btn-access">Search Jobs</a>
+                <a href="{{ access_cta_url }}" class="btn-access">Get Access</a>
             </div>
         </div>
     </div>
@@ -51,7 +51,7 @@
         <div class="header">
         <p class="brand-mark">Welcome to <span>Trades</span></p>
         <h1 class="header-title">On-site mining &amp; trades jobs across the USA &amp; Canada</h1>
-        <p class="header-sub">Haul truck, underground, mill, and trades roles. Free to search.</p>
+        <p class="header-sub">Haul truck, underground, mill, and trades roles. From $5/week.</p>
         </div>
         <div class="search-box">
             <div class="search-panel">
@@ -94,7 +94,7 @@
         </div>
         </div><!-- .hero-inner -->
         <script>
-        const ACCESS_CTA_URL = "/search";
+        const ACCESS_CTA_URL = {{ access_cta_url|tojson }};
         const searchInput = document.getElementById('landing-search-input');
         const searchResultsDemo = document.getElementById('search-results-demo');
         const filterInput = document.getElementById('filter-input');
@@ -222,7 +222,7 @@
                     </div>
                 </div>`;
             }
-            searchResultsDemo.innerHTML = `${header}<div class="job-demo-list">${cardsHtml}</div><div class="demo-cta-row"><button class="demo-cta-btn" onclick="window.location=ACCESS_CTA_URL">Search mining & trades jobs</button></div>`;
+            searchResultsDemo.innerHTML = `${header}<div class="job-demo-list">${cardsHtml}</div><div class="demo-cta-row"><button class="demo-cta-btn" onclick="window.location=ACCESS_CTA_URL">Get access to 10,000+ mining & trades jobs</button></div>`;
         }
         function showSearchLoading(message) {
             searchResultsDemo.innerHTML = `<div class="demo-results-loading">${escapeHtml(message || 'Searching jobs…')}</div>`;
@@ -429,17 +429,17 @@
     <div class="third-section">
         <div class="third-inner">
             <div class="third-content">
-            <h2 class="signup-heading">Search mining &amp; trades jobs free.</h2>
+            <h2 class="signup-heading">Sign up. Find an on-site job.</h2>
 
             <div class="cta-section">
                 <div class="access-box">
-                    <div class="access-price">Free to search</div>
+                    <div class="access-price">from $5/week</div>
                     <ul class="access-features">
                         <li>10,000+ verified on-site roles</li>
                         <li>Constantly updated with new jobs</li>
-                        <li>USA &amp; Canada mining &amp; trades</li>
+                        <li>Cancel anytime</li>
                     </ul>
-                    <a href="/search" class="access-btn">Search jobs</a>
+                    <a href="{{ access_cta_url }}" class="access-btn">Get access</a>
                 </div>
             </div>
             <section class="homepage-faq-section" id="faq" aria-labelledby="faq-heading">

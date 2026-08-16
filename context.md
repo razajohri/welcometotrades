@@ -17,7 +17,7 @@ This file is the complete context dump for the next Cursor agent / laptop push. 
 | 1 | Site / domain | Already owned: **welcometotrades.com** (Namecheap) |
 | 2 | Geography | **USA + Canada**, with **city filters** |
 | 3 | Work type | **On-site** mining / trades (NOT remote desk jobs) |
-| 4 | Monetization | **Later** — first make the app; `/search` is free at launch |
+| 4 | Monetization | **Paid like RJC** — login + Stripe; **own** Stripe + Supabase credentials (never RJC) |
 | 5 | Repo name | **welcometotrades** |
 | 6 | Clone of | Remote Jobs Canada UI + structure + backend patterns |
 | 7 | Safety rule | **New repo + new infra only.** Never deploy this from the Canada production Railway/Supabase |

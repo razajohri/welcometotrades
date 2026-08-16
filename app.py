@@ -65,10 +65,35 @@ IS_PRODUCTION = bool(
     or os.getenv("FLASK_ENV", "").lower() == "production"
 )
 
+_WEAK_SECRET_KEYS = frozenset(
+    {
+        "",
+        "local-dev-secret",
+        "change-me",
+        "secret",
+        "dev",
+        "development",
+    }
+)
+
+
+def _resolve_flask_secret_key() -> str:
+    """Require a strong FLASK_SECRET_KEY in production; allow a local-only fallback in dev."""
+    configured = (os.getenv("FLASK_SECRET_KEY") or "").strip()
+    if IS_PRODUCTION:
+        if not configured or configured.lower() in _WEAK_SECRET_KEYS or len(configured) < 32:
+            raise RuntimeError(
+                "FLASK_SECRET_KEY must be set to a strong random value (32+ chars) in production. "
+                "Refusing to start with a missing or weak session secret."
+            )
+        return configured
+    return configured or "local-dev-secret"
+
+
 app = Flask(__name__)
 app.register_blueprint(landing_search_bp)
 app.register_blueprint(contact_bp)
-app.secret_key = os.getenv("FLASK_SECRET_KEY") or "local-dev-secret"
+app.secret_key = _resolve_flask_secret_key()
 
 SESSION_DAYS = max(int(os.getenv("SESSION_DAYS", "30")), 1)
 SESSION_LIFETIME = timedelta(days=SESSION_DAYS)
@@ -521,8 +546,7 @@ def absolute_site_url(endpoint: str, **values: Any) -> str:
 
 
 def access_cta_url() -> str:
-    # Free launch: send everyone to /search. Keep /access page for later monetization.
-    if app.config.get("TEST_MODE") or current_user.is_authenticated:
+    if current_user.is_authenticated:
         return absolute_site_url("index")
     return absolute_site_url("access")
 
@@ -716,8 +740,11 @@ def subscription_success():
 
 
 @app.route("/search", methods=["GET", "POST"])
+@login_required
 def index():
-    # Launch mode: full search is free (no login / Stripe gate).
+    if not is_subscribed():
+        return redirect(url_for("subscribe"))
+
     keyword = ""
     filter_val = ""
     city_val = ""

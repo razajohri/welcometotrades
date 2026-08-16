@@ -5,12 +5,13 @@ from __future__ import annotations
 import os
 from typing import Any
 
-STRIPE_PRODUCT_ID = os.getenv("STRIPE_PRODUCT_ID", "prod_UitNW7MRLfAhlm").strip()
+# Require Railway/env — never hardcode RJC or shared Stripe IDs.
+STRIPE_PRODUCT_ID = os.getenv("STRIPE_PRODUCT_ID", "").strip()
 
-# Price IDs from Stripe (Welcome to Trades Access product) — live account.
-STRIPE_PRICE_WEEKLY = os.getenv("STRIPE_PRICE_WEEKLY", "price_1TkpR8EznoT0U9sakEjSKmNY").strip()
-STRIPE_PRICE_MONTHLY = os.getenv("STRIPE_PRICE_MONTHLY", "price_1TkpR9EznoT0U9saZm8QaFZU").strip()
-STRIPE_PRICE_YEARLY = os.getenv("STRIPE_PRICE_YEARLY", "price_1TkpR9EznoT0U9saDP0fxBrs").strip()
+# Price IDs from YOUR Welcome to Trades Stripe product (weekly / monthly / yearly).
+STRIPE_PRICE_WEEKLY = os.getenv("STRIPE_PRICE_WEEKLY", "").strip()
+STRIPE_PRICE_MONTHLY = os.getenv("STRIPE_PRICE_MONTHLY", "").strip()
+STRIPE_PRICE_YEARLY = os.getenv("STRIPE_PRICE_YEARLY", "").strip()
 
 # Backwards compatibility for older single-price deployments.
 STRIPE_PRICE_ID = os.getenv("STRIPE_PRICE_ID", STRIPE_PRICE_YEARLY).strip()
