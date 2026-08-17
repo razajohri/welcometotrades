@@ -212,7 +212,7 @@ img {
     letter-spacing: -0.02em;
     text-transform: none;
     line-height: 1.15;
-    color: var(--midnight);
+    color: var(--on-dark);
 }
 
 .app-topbar-actions {
@@ -772,7 +772,7 @@ body.resume-modal-open {
     line-height: 1.15;
     margin: 0;
     flex: 1;
-    color: var(--midnight);
+    color: var(--on-dark);
 }
 
 .search-header-form {
