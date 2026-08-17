@@ -859,6 +859,11 @@ def google_search_console_verification():
     return send_from_directory(app.root_path, "google42140a1051f05180.html", mimetype="text/html")
 
 
+@app.route("/googlee85490984c876ab3.html")
+def google_search_console_verification_e854():
+    return send_from_directory(app.root_path, "googlee85490984c876ab3.html", mimetype="text/html")
+
+
 @app.route("/")
 def root():
     return render_template(
