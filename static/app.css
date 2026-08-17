@@ -198,6 +198,9 @@ img {
     object-fit: contain;
     border: none;
     flex-shrink: 0;
+    overflow: hidden;
+    clip-path: circle(49%);
+    background: transparent;
 }
 
 .app-topbar-title {
@@ -525,6 +528,9 @@ body.resume-modal-open {
     object-fit: contain;
     border: none;
     margin-bottom: var(--space-md);
+    overflow: hidden;
+    clip-path: circle(49%);
+    background: transparent;
 }
 
 .auth-card h1 {
@@ -751,6 +757,9 @@ body.resume-modal-open {
     border-radius: 50%;
     object-fit: contain;
     border: none;
+    overflow: hidden;
+    clip-path: circle(49%);
+    background: transparent;
 }
 
 .search-header-title {

@@ -28,10 +28,10 @@ def strip_white_matte(img: Image.Image, *, threshold: int = 245) -> Image.Image:
     return rgba
 
 
-def circularize(img: Image.Image) -> Image.Image:
+def circularize(img: Image.Image, *, inset: int = 2) -> Image.Image:
     n = img.size[0]
     mask = Image.new("L", (n, n), 0)
-    ImageDraw.Draw(mask).ellipse((0, 0, n - 1, n - 1), fill=255)
+    ImageDraw.Draw(mask).ellipse((inset, inset, n - 1 - inset, n - 1 - inset), fill=255)
     out = Image.new("RGBA", (n, n), (0, 0, 0, 0))
     out.paste(img, (0, 0))
     r, g, b, a = out.split()
@@ -78,8 +78,11 @@ def write_embedded_svg(png_path: Path, svg_path: Path) -> None:
 def main() -> None:
     src_path = STATIC / "logo.png"
     src = Image.open(src_path).convert("RGBA")
-    cleaned = tight_crop(strip_white_matte(src))
-    cleaned512 = cleaned.resize((512, 512), Image.Resampling.LANCZOS)
+    cleaned = tight_crop(strip_white_matte(src, threshold=220), pad=0)
+    cleaned512 = circularize(
+        cleaned.resize((512, 512), Image.Resampling.LANCZOS),
+        inset=6,
+    )
     cleaned512.save(src_path, optimize=True)
 
     icon16 = circularize(cleaned512.resize((16, 16), Image.Resampling.LANCZOS))

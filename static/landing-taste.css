@@ -106,6 +106,9 @@ img { max-width: 100%; height: auto; }
     object-fit: contain;
     border: none;
     flex-shrink: 0;
+    overflow: hidden;
+    clip-path: circle(49%);
+    background: transparent;
 }
 
 .topbar .topbar-brand-name {
