@@ -47,7 +47,7 @@ HOMEPAGE_FAQ: list[dict[str, str]] = [
     {
         "question": "Is Welcome to Trades free?",
         "answer": (
-            "Landing previews are free. Full job search access starts from $5/week, "
+            "Landing previews are free. Full job search access starts from $5.99/week, "
             "with monthly and yearly options. Cancel anytime."
         ),
     },

@@ -7,7 +7,7 @@
 | Domain | welcometotrades.com |
 | Geography | USA + Canada + city filters |
 | Work type | On-site mining/trades |
-| Monetization | Stripe Pro — from $5/week |
+| Monetization | Stripe Pro — from $5.99/week |
 | TikTok | https://www.tiktok.com/@rigtimmins |
 
 ## Infra (new only)
