@@ -545,6 +545,13 @@ def absolute_site_url(endpoint: str, **values: Any) -> str:
     return f"https://{CANONICAL_HOST}{url_for(endpoint, **values)}"
 
 
+def brand_home_url() -> str:
+    """Signed-in users stay in-app (search). Guests go to the marketing landing."""
+    if current_user.is_authenticated:
+        return url_for("index")
+    return url_for("root")
+
+
 def access_cta_url() -> str:
     if current_user.is_authenticated:
         return absolute_site_url("index")
@@ -573,6 +580,7 @@ def inject_access_cta():
     return {
         "access_cta_url": access_cta_url(),
         "sign_in_cta_url": sign_in_cta_url(),
+        "brand_home_url": brand_home_url(),
     }
 
 

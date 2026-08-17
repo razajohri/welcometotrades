@@ -13,7 +13,7 @@
 <body class="auth-page">
     <header class="app-topbar">
         <div class="app-topbar-inner">
-            <a href="/" class="app-topbar-brand">
+            <a href="{{ brand_home_url }}" class="app-topbar-brand">
                 <img src="{{ url_for('static', filename='logo.png') }}?v=wtt6" alt="Welcome to Trades" class="app-topbar-logo">
                 <span class="app-topbar-title">Welcome to Trades</span>
             </a>
@@ -44,7 +44,7 @@
             {% elif payment_confirmed %}
             <a href="/search" class="btn btn-primary btn-lg btn-block">Start searching jobs</a>
             {% endif %}
-            <p class="auth-footer-link"><a href="/">← Back to home</a></p>
+            <p class="auth-footer-link"><a href="{{ brand_home_url }}">← Back to home</a></p>
         </div>
     </main>
 </body>

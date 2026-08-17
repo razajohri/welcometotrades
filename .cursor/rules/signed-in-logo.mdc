@@ -1,0 +1,14 @@
+---
+description: Signed-in users must not be sent back to the marketing landing via logo/home links.
+alwaysApply: true
+---
+
+# Signed-in logo / home
+
+Once a user is signed in, do **not** send them to the marketing landing (`/`).
+
+- Header **logo** and brand name → `/search` (job search), not `/`
+- In-app “Home” / “Back to home” for signed-in users → `/search`
+- Guests (logged out) can still use `/` for the landing page
+
+Use `brand_home_url` (or equivalent) instead of hardcoding `href="/"`.

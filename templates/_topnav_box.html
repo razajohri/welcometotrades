@@ -1,5 +1,5 @@
 <nav class="topnav-box" aria-label="Quick navigation">
-    <a href="/" class="topnav-box-item{% if request.endpoint in ['root', 'landing_canada', 'index'] %} topnav-box-item--active{% endif %}">Home</a>
+    <a href="{{ brand_home_url }}" class="topnav-box-item{% if request.endpoint in ['root', 'landing_canada', 'index'] %} topnav-box-item--active{% endif %}">Home</a>
     <span class="topnav-box-divider" aria-hidden="true"></span>
     <a href="{{ url_for('account') }}" class="topnav-box-item{% if request.endpoint == 'account' %} topnav-box-item--active{% endif %}"><span class="topnav-label-full">My Account</span><span class="topnav-label-short" aria-hidden="true">Account</span></a>
     <span class="topnav-box-divider" aria-hidden="true"></span>
