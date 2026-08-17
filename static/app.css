@@ -195,8 +195,9 @@ img {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid rgba(245, 79, 27, 0.35);
+    object-fit: contain;
+    border: none;
+    flex-shrink: 0;
 }
 
 .app-topbar-title {
@@ -521,7 +522,8 @@ body.resume-modal-open {
     width: 48px;
     height: 48px;
     border-radius: 50%;
-    object-fit: cover;
+    object-fit: contain;
+    border: none;
     margin-bottom: var(--space-md);
 }
 
@@ -747,8 +749,8 @@ body.resume-modal-open {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid rgba(245, 79, 27, 0.35);
+    object-fit: contain;
+    border: none;
 }
 
 .search-header-title {

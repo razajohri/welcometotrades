@@ -100,11 +100,12 @@ img { max-width: 100%; height: auto; }
 .topbar .left.logo,
 .topbar .logo { display: flex; align-items: center; gap: 10px; }
 .topbar img.logo-img {
-    height: 36px;
-    width: 36px;
+    height: 40px;
+    width: 40px;
     border-radius: 50%;
-    object-fit: cover;
-    border: 1px solid rgba(245, 79, 27, 0.4);
+    object-fit: contain;
+    border: none;
+    flex-shrink: 0;
 }
 
 .topbar .topbar-brand-name {
