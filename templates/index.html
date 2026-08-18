@@ -9,13 +9,14 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}?v=brand1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}?v=searchlayout2">
 </head>
 <body class="search-page">
     <header class="search-header">
+        <div class="search-header-inner">
         <div class="search-header-top">
             <a href="{{ brand_home_url }}" class="app-topbar-brand">
-                <img src="{{ url_for('static', filename='logo.png') }}?v=wtt6" alt="Welcome to Trades" class="search-header-logo">
+                <img src="{{ url_for('static', filename='logo.png') }}?v=wtt7" alt="Welcome to Trades" class="search-header-logo">
             </a>
             <h1 class="search-header-title">Welcome to Trades</h1>
             {% include '_mobile_account_link.html' %}
@@ -42,6 +43,21 @@
                             </span>
                             <input type="text" id="keyword" name="keyword" class="search-pill-input" placeholder="e.g. Haul Truck Operator" value="{{ keyword|default('') }}" aria-label="Job title or keywords">
                         </div>
+                        <div class="city-select-wrap">
+                            <label for="city" class="visually-hidden">City</label>
+                            <span class="city-select-icon" aria-hidden="true">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 21s7-5.4 7-11a7 7 0 1 0-14 0c0 5.6 7 11 7 11z" stroke="#111" stroke-width="2" stroke-linejoin="round"/>
+                                    <circle cx="12" cy="10" r="2.25" stroke="#111" stroke-width="2"/>
+                                </svg>
+                            </span>
+                            <input type="text" id="city" name="city" class="city-select" list="city-options" placeholder="City" value="{{ city|default('') }}" autocomplete="off" aria-label="Filter by city">
+                            <datalist id="city-options">
+                                {% for c in available_cities|default([]) %}
+                                <option value="{{ c }}"></option>
+                                {% endfor %}
+                            </datalist>
+                        </div>
                         <button type="submit" class="search-pill-btn" aria-label="Search">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <circle cx="11" cy="11" r="7" stroke="#fff" stroke-width="2" fill="none" />
@@ -50,13 +66,6 @@
                             Search
                         </button>
                         <input type="hidden" id="filter" name="filter" value="{{ filter|default('') }}">
-                        <label class="city-filter-label" for="city" style="display:block;margin:8px 0 4px;font-size:0.9rem;">City</label>
-                        <select id="city" name="city" class="search-pill-input" style="max-width:280px;margin-bottom:8px;" aria-label="Filter by city">
-                            <option value="">All cities (USA &amp; Canada)</option>
-                            {% for c in available_cities|default([]) %}
-                            <option value="{{ c }}" {% if city|default('') == c %}selected{% endif %}>{{ c }}</option>
-                            {% endfor %}
-                        </select>
                     </div>
                 </div>
                 <div class="filter-buttons">
@@ -70,6 +79,7 @@
                 <input type="hidden" id="page" name="page" value="{{ page|default(1) }}">
                 <input type="hidden" id="results_per_page" name="results_per_page" value="{{ results_per_page|default(20) }}">
             </form>
+        </div>
         </div>
     </header>
 
@@ -181,6 +191,21 @@
             document.getElementById('page').value = 1;
             document.getElementById('resultsForm').submit();
         });
+
+        const citySelect = document.getElementById('city');
+        if (citySelect) {
+            citySelect.addEventListener('change', () => {
+                document.getElementById('page').value = 1;
+                document.getElementById('resultsForm').submit();
+            });
+            citySelect.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    document.getElementById('page').value = 1;
+                    document.getElementById('resultsForm').submit();
+                }
+            });
+        }
 
         window.addEventListener('DOMContentLoaded', () => {
             if (filterActiveRow) {

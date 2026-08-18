@@ -11,7 +11,7 @@ SITE_NAME = "Welcome to Trades"
 DEFAULT_OG_IMAGE_PATH = "/static/og-image.jpg"
 OG_IMAGE_WIDTH = 1200
 OG_IMAGE_HEIGHT = 630
-SUPPORT_EMAIL = "hello@welcometotrades.com"
+SUPPORT_EMAIL = "welcometotrades@gmail.com"
 TIKTOK_URL = "https://www.tiktok.com/@rigtimmins"
 TIKTOK_HANDLE = "@rigtimmins"
 

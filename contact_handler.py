@@ -40,7 +40,7 @@ MAX_SUBJECT_LENGTH = 200
 RESEND_API_KEY = os.getenv("RESEND_API_KEY", "").strip()
 CONTACT_FROM_EMAIL = os.getenv(
     "CONTACT_FROM_EMAIL",
-    os.getenv("RESEND_FROM_EMAIL", f"Welcome to Trades <{SUPPORT_EMAIL}>"),
+    os.getenv("RESEND_FROM_EMAIL", "Welcome to Trades <hello@welcometotrades.com>"),
 ).strip()
 SMTP_SERVER = os.getenv('SMTP_SERVER', 'smtp.gmail.com')
 SMTP_PORT = int(os.getenv('SMTP_PORT', '587'))

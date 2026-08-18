@@ -31,7 +31,7 @@ def main() -> int:
         print("No stored-only contact messages to replay.")
         return 0
 
-    contact_to = os.getenv("CONTACT_EMAIL", "roman@welcometotrades.com")
+    contact_to = os.getenv("CONTACT_EMAIL", "welcometotrades@gmail.com")
     sent = 0
     for row in rows:
         ok = send_email(

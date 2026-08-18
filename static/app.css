@@ -739,11 +739,19 @@ body.resume-modal-open {
     display: none;
 }
 
-.search-header-top {
+.search-header-inner {
     width: 100%;
     max-width: var(--container-max);
     margin: 0 auto;
-    padding: var(--space-sm) var(--space-xl);
+    padding: 0 var(--space-xl);
+    box-sizing: border-box;
+}
+
+.search-header-top {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: var(--space-sm) 0;
     display: flex;
     align-items: center;
     gap: var(--space-md);
@@ -751,15 +759,25 @@ body.resume-modal-open {
     box-sizing: border-box;
 }
 
+.search-header .app-topbar-brand {
+    flex: 0 0 auto;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: var(--orange);
+}
+
 .search-header-logo {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    object-fit: contain;
+    object-fit: cover;
+    object-position: center;
     border: none;
-    overflow: hidden;
-    clip-path: circle(49%);
-    background: transparent;
+    display: block;
+    background: var(--orange);
+    transform: scale(1.12);
 }
 
 .search-header-title {
@@ -776,15 +794,74 @@ body.resume-modal-open {
 }
 
 .search-header-form {
-    max-width: var(--container-max);
-    margin: 0 auto;
-    padding: 0 var(--space-lg) var(--space-lg);
+    max-width: none;
+    margin: 0;
+    padding: 0 0 var(--space-lg);
     width: 100%;
     box-sizing: border-box;
 }
 
 .search-header .city-filter-label {
     color: rgba(255, 255, 255, 0.65) !important;
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.city-select-wrap {
+    position: relative;
+    flex: 0 1 220px;
+    min-width: 160px;
+    max-width: 260px;
+    height: 50px;
+}
+
+.city-select-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: inline-flex;
+    align-items: center;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.city-select {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 100%;
+    height: 50px;
+    border-radius: 50px;
+    border: 1px solid var(--hairline);
+    background: var(--cool);
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 0 18px 0 40px;
+    box-sizing: border-box;
+}
+
+.city-select::placeholder {
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.city-select:focus {
+    outline: none;
+    border-color: var(--orange);
+    background-color: var(--surface-white);
+    box-shadow: 0 0 0 4px rgba(245, 79, 27, 0.18);
 }
 
 .search-header .filter-btn {
@@ -993,7 +1070,7 @@ body.resume-modal-open {
     max-width: var(--container-max);
     margin-left: auto;
     margin-right: auto;
-    padding: var(--space-md) var(--space-lg) var(--space-3xl);
+    padding: var(--space-md) var(--space-xl) var(--space-3xl);
     box-sizing: border-box;
 }
 
@@ -2051,8 +2128,7 @@ body.resume-modal-open {
 @media (max-width: 700px) {
     .app-container,
     .app-topbar-inner,
-    .search-header-top,
-    .search-header-form,
+    .search-header-inner,
     .search-content {
         padding-left: var(--space-md);
         padding-right: var(--space-md);
@@ -2066,7 +2142,7 @@ body.resume-modal-open {
         flex-wrap: nowrap;
         align-items: center;
         row-gap: 0;
-        padding: var(--space-sm) var(--space-md) 0;
+        padding: var(--space-sm) 0 0;
         min-height: auto;
         max-width: none;
         width: 100%;
@@ -2158,9 +2234,16 @@ body.resume-modal-open {
     }
 
     .search-pill,
-    .search-pill-btn {
+    .search-pill-btn,
+    .city-select-wrap {
         width: 100%;
         max-width: 100%;
+        flex: 1 1 auto;
+    }
+
+    .city-select-wrap {
+        min-width: 0;
+        max-width: none;
     }
 
     .search-pill-btn {
@@ -2185,7 +2268,9 @@ body.resume-modal-open {
     }
 
     .search-pill,
-    .search-pill-btn {
+    .search-pill-btn,
+    .city-select-wrap,
+    .city-select {
         min-height: 48px;
         height: 48px;
     }

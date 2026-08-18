@@ -14,8 +14,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='landing-taste.css') }}?v=ioshero3">
-    <link rel="stylesheet" href="{{ url_for('static', filename='contact_form.css') }}?v=ioshero3">
+    <link rel="stylesheet" href="{{ url_for('static', filename='landing-taste.css') }}?v=ioshero1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='contact_form.css') }}?v=ioshero1">
     {% if recaptcha_enabled and recaptcha_site_key %}
     <script src="https://www.google.com/recaptcha/api.js?render={{ recaptcha_site_key }}" async defer></script>
     {% endif %}
@@ -32,7 +32,9 @@
         <div class="topbar-inner">
             <div class="left logo">
                 <a href="{{ brand_home_url }}" style="display:flex; align-items:center; gap:10px; text-decoration:none;">
-                    <img class="logo-img" src="{{ url_for('static', filename='logo.png') }}?v=wtt6" alt="Welcome to Trades" width="40" height="40">
+                    <span class="topbar-logo-mark">
+                        <img class="logo-img" src="{{ url_for('static', filename='logo.png') }}?v=wtt7" alt="Welcome to Trades" width="40" height="40">
+                    </span>
                     <span class="topbar-brand-name">Welcome to Trades</span>
                 </a>
             </div>
@@ -53,9 +55,19 @@
         <h1 class="header-title">On-site mining &amp; trades jobs across the USA &amp; Canada</h1>
         <p class="header-sub">Haul truck, underground, mill, and trades roles. From $5.99/week.</p>
         </div>
+        <div class="proof-strip proof-strip--hero">
+            <div class="header-social" aria-hidden="true">
+                <img src="/static/client_a.webp" alt="">
+                <img src="/static/client_b.webp" alt="">
+                <img src="/static/client_c.webp" alt="">
+                <img src="/static/client_d.webp" alt="">
+            </div>
+            <span class="header-rating" aria-hidden="true">★★★★★</span>
+            <p class="header-loved">On-site roles for mining and trades workers</p>
+        </div>
         <div class="search-box">
             <div class="search-panel">
-                <div class="search-hint">Search haul truck, underground, millwright, electrician, and more.</div>
+                <div class="search-hint">Search for your next on-site role</div>
                 <div class="landing-pill" role="search">
                 <span class="pill-icon" aria-hidden="true">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -336,16 +348,6 @@
         }
         </script>
     </div> <!-- .hero -->
-    <div class="proof-strip">
-        <div class="header-social" aria-hidden="true">
-            <img src="/static/client_a.webp" alt="">
-            <img src="/static/client_b.webp" alt="">
-            <img src="/static/client_c.webp" alt="">
-            <img src="/static/client_d.webp" alt="">
-        </div>
-        <span class="header-rating" aria-hidden="true">★★★★★</span>
-        <p class="header-loved">On-site roles for mining and trades workers</p>
-    </div>
     <!-- main-section: features + reviews -->
     <div class="main-section">
     <div class="features">

@@ -907,7 +907,7 @@ def _fetch_all_listed_jobs(keyword: str, filter_value: str, *, columns: str, cit
     return _sort_jobs_by_date_posted(filtered)
 
 
-def list_available_cities(*, limit: int = 80) -> list[str]:
+def list_available_cities(*, limit: int = 0) -> list[str]:
     """City options for search UI, derived from currently eligible jobs."""
     return collect_cities(_get_cached_eligible_jobs(), limit=limit)
 

@@ -67,7 +67,174 @@ _INDEED_PROVINCE_COUNTRY = re.compile(
 _INDEED_STATE_COUNTRY = re.compile(
     r",\s*([A-Z]{2})\s*,?\s*(usa|us|united states)?\s*$", re.I,
 )
-_CITY_SPLIT = re.compile(r"[,/|•\-–—]+")
+_CITY_SPLIT = re.compile(r"[,/|•]+")
+_CITY_JUNK_PREFIXES = frozenset(
+    {
+        "remote",
+        "hybrid",
+        "onsite",
+        "on-site",
+        "on site",
+        "anywhere",
+        "nationwide",
+        "multiple locations",
+        "various",
+        "various locations",
+        "united states",
+        "usa",
+        "canada",
+        "north america",
+    }
+)
+_REGION_CODES = frozenset(CANADA_PROVINCE_CODES + US_STATE_CODES + ("dc",))
+_REGION_NAMES = frozenset(
+    {
+        "ontario",
+        "quebec",
+        "québec",
+        "british columbia",
+        "alberta",
+        "manitoba",
+        "saskatchewan",
+        "nova scotia",
+        "new brunswick",
+        "newfoundland",
+        "newfoundland and labrador",
+        "prince edward island",
+        "yukon",
+        "northwest territories",
+        "nunavut",
+        "alabama",
+        "alaska",
+        "arizona",
+        "arkansas",
+        "california",
+        "colorado",
+        "connecticut",
+        "delaware",
+        "florida",
+        "georgia",
+        "hawaii",
+        "idaho",
+        "illinois",
+        "indiana",
+        "iowa",
+        "kansas",
+        "kentucky",
+        "louisiana",
+        "maine",
+        "maryland",
+        "massachusetts",
+        "michigan",
+        "minnesota",
+        "mississippi",
+        "missouri",
+        "montana",
+        "nebraska",
+        "nevada",
+        "new hampshire",
+        "new jersey",
+        "new mexico",
+        "new york",
+        "north carolina",
+        "north dakota",
+        "ohio",
+        "oklahoma",
+        "oregon",
+        "pennsylvania",
+        "rhode island",
+        "south carolina",
+        "south dakota",
+        "tennessee",
+        "texas",
+        "utah",
+        "vermont",
+        "virginia",
+        "washington",
+        "west virginia",
+        "wisconsin",
+        "wyoming",
+        "district of columbia",
+    }
+)
+_COUNTRY_NAMES = frozenset({"canada", "ca", "usa", "us", "u.s.", "u.s.a.", "united states", "remote"})
+
+
+def _strip_trailing_region(value: str) -> str:
+    text = (value or "").strip()
+    if not text:
+        return ""
+    tokens = text.rsplit(None, 1)
+    if len(tokens) == 2 and tokens[1].lower().rstrip(".") in _REGION_CODES:
+        return tokens[0].strip(" -")
+    lowered = text.lower()
+    for name in sorted(_REGION_NAMES, key=len, reverse=True):
+        suffix = f" {name}"
+        if lowered.endswith(suffix):
+            return text[: -len(suffix)].strip(" -")
+    return text
+
+
+def extract_city(location: str) -> str:
+    loc = (location or "").strip()
+    if not loc:
+        return ""
+    if loc.lower() in _COUNTRY_NAMES:
+        return ""
+
+    if "," in loc:
+        parts = [p.strip() for p in loc.split(",") if p.strip()]
+    else:
+        parts = [p.strip() for p in _CITY_SPLIT.split(loc) if p.strip()]
+    if not parts:
+        return ""
+
+    city = parts[0]
+    if city.lower() in _CITY_JUNK_PREFIXES and len(parts) > 1:
+        city = parts[1]
+        parts = parts[1:]
+    raw_city = city
+    city = _strip_trailing_region(city)
+    if not city:
+        return ""
+
+    lowered = city.lower()
+    remaining = [p.lower().strip() for p in parts[1:] if p.strip()]
+    had_region_suffix = city.casefold() != raw_city.strip().casefold()
+    remaining_has_code = any(p.rstrip(".") in _REGION_CODES for p in remaining)
+    region_only = lowered in _REGION_NAMES or lowered in _REGION_CODES
+    if region_only and not had_region_suffix and not remaining_has_code:
+        return ""
+    if lowered in _CITY_JUNK_PREFIXES or lowered in _COUNTRY_NAMES:
+        return ""
+    if len(city) < 2 or len(city) > 40:
+        return ""
+    if city.isupper() and len(city) > 3:
+        city = city.title()
+    return city
+
+
+def city_matches(location: str, city_filter: str) -> bool:
+    needle = (city_filter or "").strip().lower()
+    if not needle:
+        return True
+    return needle in (location or "").lower()
+
+
+def collect_cities(rows: list[dict[str, Any]], *, limit: int = 0) -> list[str]:
+    labels_by_key: dict[str, str] = {}
+    for row in rows:
+        city = extract_city(str(row.get("location") or ""))
+        if not city:
+            continue
+        key = city.lower()
+        if key not in labels_by_key:
+            labels_by_key[key] = city
+
+    names = sorted(labels_by_key.values(), key=str.casefold)
+    if limit and len(names) > limit:
+        return names[:limit]
+    return names
 
 
 def _contains_any(text: str, terms: tuple[str, ...]) -> bool:
@@ -178,47 +345,3 @@ def is_canada_remote(
 
 # Backwards-compatible alias for older call sites during the port.
 is_canada_job_row = is_trades_job_row
-
-
-def extract_city(location: str) -> str:
-    loc = (location or "").strip()
-    if not loc:
-        return ""
-    lowered = loc.lower()
-    if lowered in {"canada", "ca", "usa", "us", "u.s.", "u.s.a.", "united states", "remote"}:
-        return ""
-
-    parts = [p.strip() for p in _CITY_SPLIT.split(loc) if p.strip()]
-    if not parts:
-        return ""
-
-    city = parts[0]
-    if len(city) <= 3 and city.lower() in CANADA_PROVINCE_CODES + US_STATE_CODES:
-        return ""
-    if city.isupper() and len(city) > 3:
-        city = city.title()
-    return city
-
-
-def city_matches(location: str, city_filter: str) -> bool:
-    needle = (city_filter or "").strip().lower()
-    if not needle:
-        return True
-    return needle in (location or "").lower()
-
-
-def collect_cities(rows: list[dict[str, Any]], *, limit: int = 80) -> list[str]:
-    counts: dict[str, int] = {}
-    labels_by_key: dict[str, str] = {}
-    for row in rows:
-        city = extract_city(str(row.get("location") or ""))
-        if not city:
-            continue
-        key = city.lower()
-        if key not in labels_by_key:
-            labels_by_key[key] = city
-            counts[key] = 0
-        counts[key] += 1
-
-    ranked = sorted(counts.items(), key=lambda item: (-item[1], item[0]))
-    return [labels_by_key[key] for key, _count in ranked[:limit]]
