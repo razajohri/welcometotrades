@@ -1272,7 +1272,7 @@ img { max-width: 100%; height: auto; }
     .hero {
         min-height: auto;
         padding:
-            calc(var(--nav-height) + var(--safe-top) + 10px)
+            calc(var(--nav-height) + var(--safe-top) + 36px)
             max(16px, var(--safe-right))
             calc(24px + var(--safe-bottom))
             max(16px, var(--safe-left));
@@ -1288,58 +1288,58 @@ img { max-width: 100%; height: auto; }
     }
 
     .hero-inner {
-        gap: 10px;
+        gap: 18px;
         width: 100%;
     }
 
     .header {
-        padding-top: 0;
+        padding-top: 6px;
         max-width: none;
         width: 100%;
     }
 
     .brand-mark {
-        font-size: 1.65rem;
-        margin-bottom: 6px;
-        line-height: 1.1;
+        font-size: clamp(2.05rem, 9vw, 2.45rem);
+        margin-bottom: 12px;
+        line-height: 1.08;
     }
 
     .header-title {
-        font-size: 1.0625rem;
+        font-size: clamp(1.2rem, 4.8vw, 1.4rem);
         line-height: 1.35;
-        margin-bottom: 4px;
+        margin-bottom: 8px;
         padding: 0 8px;
     }
 
     .header-sub {
-        font-size: 0.8125rem;
-        line-height: 1.4;
-        max-width: 22em;
+        font-size: 1rem;
+        line-height: 1.45;
+        max-width: 24em;
         margin-bottom: 0;
     }
 
     .proof-strip--hero {
         flex-direction: column;
-        gap: 6px;
-        padding: 2px 0 6px;
+        gap: 8px;
+        padding: 4px 0 4px;
     }
     .proof-strip--hero .header-social img {
-        width: 32px;
-        height: 32px;
+        width: 34px;
+        height: 34px;
         border-color: var(--midnight-deep);
     }
     .proof-strip--hero .header-rating {
-        font-size: 0.875rem;
+        font-size: 1rem;
     }
     .proof-strip--hero .header-loved {
-        font-size: 0.8125rem;
-        max-width: 20em;
+        font-size: 0.875rem;
+        max-width: 22em;
     }
 
-    /* White search card — RJC / Career Hound mobile pattern */
+    /* White search card — keep it compact so the hero copy can breathe */
     .search-box {
         width: 100%;
-        margin-top: 4px;
+        margin-top: 2px;
     }
 
     .search-panel {
@@ -1347,17 +1347,17 @@ img { max-width: 100%; height: auto; }
         color: var(--ink);
         border: none;
         border-radius: 16px;
-        padding: 18px 14px 14px;
+        padding: 14px 14px 12px;
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
         text-align: center;
     }
 
     .search-hint {
         display: block;
-        font-size: 0.875rem;
+        font-size: 0.8125rem;
         font-weight: 600;
         color: var(--ink);
-        margin-bottom: 12px;
+        margin-bottom: 10px;
         line-height: 1.35;
     }
 
@@ -1415,7 +1415,7 @@ img { max-width: 100%; height: auto; }
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 8px;
-        margin-top: 12px;
+        margin-top: 10px;
         width: 100%;
     }
 
@@ -1424,8 +1424,8 @@ img { max-width: 100%; height: auto; }
         justify-content: center;
         text-align: center;
         font-size: 0.8125rem;
-        padding: 9px 10px;
-        min-height: 40px;
+        padding: 8px 10px;
+        min-height: 38px;
         background: #fff;
         color: var(--orange);
         border: 1.5px solid var(--orange);
@@ -1441,14 +1441,18 @@ img { max-width: 100%; height: auto; }
     }
 
     #search-results-demo {
-        margin-top: 14px;
-        padding-top: 14px;
+        margin-top: 12px;
+        padding-top: 12px;
         border-top: 1px solid #e8e7ed;
     }
 
     #search-results-demo .job-demo-list {
         max-height: none;
-        gap: 10px;
+        gap: 8px;
+    }
+
+    #search-results-demo .job-demo-card:nth-child(n+2) {
+        display: none;
     }
 
     #search-results-demo .job-demo-card,
@@ -1456,7 +1460,7 @@ img { max-width: 100%; height: auto; }
         flex-direction: row;
         align-items: center;
         gap: 10px;
-        padding: 12px;
+        padding: 10px;
         background: #f4f3f8;
         border: 1px solid #e8e7ed;
         border-radius: 12px;
@@ -1529,9 +1533,9 @@ img { max-width: 100%; height: auto; }
         padding: 10px 18px;
     }
     .topbar .actions { gap: 0; width: auto; }
-    .brand-mark { font-size: 1.5rem; }
-    .header-title { font-size: 1rem; padding: 0 4px; }
-    .header-sub { font-size: 0.8125rem; }
+    .brand-mark { font-size: clamp(1.95rem, 8.8vw, 2.25rem); }
+    .header-title { font-size: 1.2rem; padding: 0 4px; }
+    .header-sub { font-size: 0.9375rem; }
     .landing-pill-button { min-width: 80px; font-size: 0.875rem; }
     .filter-btn { font-size: 0.75rem; padding: 8px 8px; }
     .job-demo-title { font-size: 0.8125rem; }
@@ -1563,10 +1567,7 @@ img { max-width: 100%; height: auto; }
     }
 }
 
-/* Short viewports (TikTok in-app browser chrome eats height) */
+/* Short viewports (TikTok in-app browser chrome eats height) — keep type readable */
 @media (max-height: 700px) and (max-width: 900px) {
     .hero { min-height: auto; }
-    .brand-mark { margin-bottom: 8px; }
-    .header-title { margin-bottom: 8px; }
-    .header-sub { margin-bottom: 0; }
 }
