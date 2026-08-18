@@ -9,14 +9,14 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}?v=navlogo1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}?v=navlogo2">
 </head>
 <body class="search-page">
     <header class="search-header">
         <div class="search-header-inner">
         <div class="search-header-top">
             <a href="{{ brand_home_url }}" class="app-topbar-brand">
-                <img src="{{ url_for('static', filename='logo-mark.svg') }}?v=1" alt="Welcome to Trades" class="search-header-logo">
+                <img src="{{ url_for('static', filename='logo-ui.png') }}?v=wtt8" alt="Welcome to Trades" class="search-header-logo">
             </a>
             <h1 class="search-header-title">Welcome to Trades</h1>
             {% include '_mobile_account_link.html' %}

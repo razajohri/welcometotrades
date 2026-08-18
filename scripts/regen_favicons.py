@@ -88,12 +88,14 @@ def main() -> None:
     icon16 = circularize(cleaned512.resize((16, 16), Image.Resampling.LANCZOS))
     icon32 = circularize(cleaned512.resize((32, 32), Image.Resampling.LANCZOS))
     icon48 = circularize(cleaned512.resize((48, 48), Image.Resampling.LANCZOS))
+    icon96 = circularize(cleaned512.resize((96, 96), Image.Resampling.LANCZOS))
     icon192 = circularize(cleaned512.resize((192, 192), Image.Resampling.LANCZOS))
 
     icon48.save(STATIC / "favicon-48.png", optimize=True)
     icon192.save(STATIC / "favicon-192.png", optimize=True)
     icon48.save(STATIC / "favicon.png", optimize=True)
     icon48.save(STATIC / "wtt-favicon-48.png", optimize=True)
+    icon96.save(STATIC / "logo-ui.png", optimize=True)
     icon192.save(STATIC / "wtt-favicon-192.png", optimize=True)
     icon16.save(
         STATIC / "favicon.ico",

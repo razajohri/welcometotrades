@@ -192,12 +192,13 @@ img {
 }
 
 .app-topbar-logo {
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
     border: none;
     flex-shrink: 0;
     display: block;
+    object-fit: cover;
 }
 
 .app-topbar-title {
@@ -758,18 +759,19 @@ body.resume-modal-open {
 
 .search-header .app-topbar-brand {
     flex: 0 0 auto;
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
     overflow: hidden;
 }
 
 .search-header-logo {
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
     border: none;
     display: block;
+    object-fit: cover;
 }
 
 .search-header-title {
