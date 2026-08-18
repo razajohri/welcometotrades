@@ -236,7 +236,7 @@ img { max-width: 100%; height: auto; }
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 28px;
+    gap: 12px;
     text-align: center;
 }
 
@@ -269,7 +269,7 @@ img { max-width: 100%; height: auto; }
 }
 
 .header-title {
-    margin: 0 auto 14px;
+    margin: 0 auto;
     font-family: var(--font-body);
     font-style: normal;
     font-weight: 600;
@@ -310,7 +310,7 @@ img { max-width: 100%; height: auto; }
     border-top: none;
 }
 .proof-strip--hero {
-    padding: 4px 0 2px;
+    padding: 0;
 }
 .proof-strip .header-social {
     display: flex;
@@ -340,7 +340,7 @@ img { max-width: 100%; height: auto; }
 /* Search panel — dark glass (theme lock, not a white card) */
 .search-box {
     width: 100%;
-    margin: 0 auto;
+    margin: 16px auto 0;
     align-self: stretch;
     animation: tasteFade 700ms 80ms ease-out both;
 }
@@ -1216,7 +1216,7 @@ img { max-width: 100%; height: auto; }
 /* ── Phone / TikTok in-app browser (US & CA iOS + Android) ── */
 @media (max-width: 900px) {
     .topbar-post-job { display: none; }
-    .hero-inner { gap: 16px; }
+    .hero-inner { gap: 10px; }
     .header { max-width: none; }
     .brand-mark {
         font-size: clamp(1.85rem, 8vw, 2.25rem);
@@ -1226,7 +1226,7 @@ img { max-width: 100%; height: auto; }
     .header-title {
         font-size: clamp(1.15rem, 4.6vw, 1.4rem);
         line-height: 1.28;
-        margin-bottom: 8px;
+        margin-bottom: 0;
         max-width: none;
     }
     .header-sub {
@@ -1288,7 +1288,7 @@ img { max-width: 100%; height: auto; }
     }
 
     .hero-inner {
-        gap: 18px;
+        gap: 10px;
         width: 100%;
     }
 
@@ -1307,7 +1307,7 @@ img { max-width: 100%; height: auto; }
     .header-title {
         font-size: clamp(1.2rem, 4.8vw, 1.4rem);
         line-height: 1.35;
-        margin-bottom: 8px;
+        margin-bottom: 0;
         padding: 0 8px;
     }
 
