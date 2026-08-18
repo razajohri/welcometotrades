@@ -14,7 +14,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='landing-taste.css') }}?v=navfull1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='landing-taste.css') }}?v=navlogo1">
     <link rel="stylesheet" href="{{ url_for('static', filename='contact_form.css') }}?v=ioshero1">
     {% if recaptcha_enabled and recaptcha_site_key %}
     <script src="https://www.google.com/recaptcha/api.js?render={{ recaptcha_site_key }}" async defer></script>
@@ -33,7 +33,7 @@
             <div class="left logo">
                 <a href="{{ brand_home_url }}" style="display:flex; align-items:center; gap:10px; text-decoration:none;">
                     <span class="topbar-logo-mark">
-                        <img class="logo-img" src="{{ url_for('static', filename='logo.png') }}?v=wtt7" alt="Welcome to Trades" width="40" height="40">
+                        <img class="logo-img" src="{{ url_for('static', filename='logo-mark.svg') }}?v=1" alt="Welcome to Trades" width="40" height="40">
                     </span>
                     <span class="topbar-brand-name">Welcome to Trades</span>
                 </a>

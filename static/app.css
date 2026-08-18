@@ -195,12 +195,9 @@ img {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    object-fit: contain;
     border: none;
     flex-shrink: 0;
-    overflow: hidden;
-    clip-path: circle(49%);
-    background: transparent;
+    display: block;
 }
 
 .app-topbar-title {
@@ -765,19 +762,14 @@ body.resume-modal-open {
     height: 40px;
     border-radius: 50%;
     overflow: hidden;
-    background: var(--orange);
 }
 
 .search-header-logo {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    object-fit: cover;
-    object-position: center;
     border: none;
     display: block;
-    background: var(--orange);
-    transform: scale(1.12);
 }
 
 .search-header-title {

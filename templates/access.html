@@ -94,15 +94,13 @@
             height: 36px;
             border-radius: 50%;
             overflow: hidden;
-            background: #F54F1B;
             flex-shrink: 0;
+            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08);
         }
 
         .access-topbar-logo img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
-            object-position: center;
             display: block;
         }
 
@@ -231,15 +229,12 @@
             height: 56px;
             border-radius: 50%;
             overflow: hidden;
-            background: #F54F1B;
             box-shadow: 0 8px 24px rgba(245, 79, 27, 0.35);
         }
 
         .access-logo {
             width: 100%;
             height: 100%;
-            object-fit: cover;
-            object-position: center;
             display: block;
         }
 
@@ -530,7 +525,7 @@
         <header class="access-topbar">
             <a href="{{ brand_home_url }}" class="access-topbar-brand">
                 <span class="access-topbar-logo">
-                    <img src="{{ url_for('static', filename='logo.png') }}?v=wtt7" alt="" width="36" height="36" decoding="async">
+                    <img src="{{ url_for('static', filename='logo-mark.svg') }}?v=1" alt="" width="36" height="36" decoding="async">
                 </span>
                 <span>Welcome to Trades</span>
             </a>
@@ -555,7 +550,7 @@
 
                 <div class="access-brand">
                     <div class="access-logo-wrap">
-                        <img src="{{ url_for('static', filename='logo.png') }}?v=wtt7" alt="Welcome to Trades" class="access-logo" width="56" height="56" decoding="async">
+                        <img src="{{ url_for('static', filename='logo-mark.svg') }}?v=1" alt="Welcome to Trades" class="access-logo" width="56" height="56" decoding="async">
                     </div>
                     <div class="access-brand-name">Welcome to Trades</div>
                 </div>
