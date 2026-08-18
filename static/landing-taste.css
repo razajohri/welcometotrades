@@ -87,18 +87,26 @@ img { max-width: 100%; height: auto; }
 }
 
 .topbar-inner {
-    max-width: var(--container);
-    margin: 0 auto;
-    padding: 0 max(24px, var(--safe-right)) 0 max(24px, var(--safe-left));
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 0 max(32px, var(--safe-right)) 0 max(32px, var(--safe-left));
     min-height: var(--nav-height);
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 12px;
+    box-sizing: border-box;
 }
 
 .topbar .left.logo,
-.topbar .logo { display: flex; align-items: center; gap: 10px; }
+.topbar .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 0 0 auto;
+    margin-right: auto;
+}
 .topbar-logo-mark {
     width: 40px;
     height: 40px;
@@ -111,15 +119,14 @@ img { max-width: 100%; height: auto; }
     justify-content: center;
 }
 .topbar img.logo-img {
-    height: 40px;
-    width: 40px;
+    height: 100%;
+    width: 100%;
     border-radius: 50%;
     object-fit: cover;
     object-position: center;
     border: none;
     flex-shrink: 0;
-    background: var(--orange);
-    transform: scale(1.12);
+    display: block;
 }
 
 .topbar .topbar-brand-name {
@@ -137,6 +144,7 @@ img { max-width: 100%; height: auto; }
     display: flex;
     align-items: center;
     gap: 10px;
+    flex: 0 0 auto;
     margin-left: auto;
 }
 
