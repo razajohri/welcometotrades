@@ -256,11 +256,12 @@ img { max-width: 100%; height: auto; }
     font-family: var(--font-display);
     font-style: normal;
     font-weight: 600;
-    font-size: clamp(2.6rem, 5.5vw, 4.5rem);
+    font-size: clamp(2rem, 4.2vw, 3.75rem);
     line-height: 1.05;
     letter-spacing: -0.04em;
     color: var(--orange);
     padding-bottom: 2px;
+    white-space: nowrap;
     animation: tasteIn 700ms ease-out both;
 }
 .brand-mark span {
