@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>{{ seo_title }}</title>
-    <link rel="preload" as="image" type="image/webp" href="{{ url_for('static', filename='access-bg-sm.webp') }}?v=bg1" fetchpriority="high" media="(max-width: 700px)">
-    <link rel="preload" as="image" type="image/webp" href="{{ url_for('static', filename='access-bg.webp') }}?v=bg1" fetchpriority="high" media="(min-width: 701px)">
+    <link rel="preload" as="image" type="image/webp" href="{{ url_for('static', filename='access-bg-sm.webp') }}?v=bg2" fetchpriority="high" media="(max-width: 700px)">
+    <link rel="preload" as="image" type="image/webp" href="{{ url_for('static', filename='access-bg.webp') }}?v=bg2" fetchpriority="high" media="(min-width: 701px)">
     {% include '_seo_head.html' %}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -43,6 +43,17 @@
             height: 100%;
             object-fit: cover;
             object-position: center 38%;
+        }
+
+        @media (max-width: 700px) {
+            .access-bg img {
+                width: 175%;
+                max-width: none;
+                height: 100%;
+                left: 0;
+                right: auto;
+                object-position: left 42%;
+            }
         }
 
         .access-bg::after {
@@ -346,8 +357,8 @@
 <body>
     <div class="access-bg" aria-hidden="true">
         <picture>
-            <source media="(max-width: 700px)" srcset="{{ url_for('static', filename='access-bg-sm.webp') }}?v=bg1" type="image/webp">
-            <source srcset="{{ url_for('static', filename='access-bg.webp') }}?v=bg1" type="image/webp">
+            <source media="(max-width: 700px)" srcset="{{ url_for('static', filename='access-bg-sm.webp') }}?v=bg2" type="image/webp">
+            <source srcset="{{ url_for('static', filename='access-bg.webp') }}?v=bg2" type="image/webp">
             <img src="{{ url_for('static', filename='access-bg.jpg') }}" alt="" width="1024" height="682" decoding="async" fetchpriority="high">
         </picture>
     </div>
