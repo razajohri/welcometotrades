@@ -1,1 +1,5 @@
+{% if current_user.is_authenticated %}
 <a href="{{ url_for('account') }}" class="mobile-header-account{% if request.endpoint == 'account' %} mobile-header-account--active{% endif %}">My Account</a>
+{% else %}
+<a href="{{ url_for('login') }}" class="mobile-header-account">Sign in</a>
+{% endif %}

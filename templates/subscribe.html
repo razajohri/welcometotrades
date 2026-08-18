@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}?v=brand1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}?v=signin1">
 </head>
 <body class="subscribe-page">
     <header class="app-topbar">
@@ -17,6 +17,10 @@
                 <img src="{{ url_for('static', filename='logo-ui.png') }}?v=wtt8" alt="Welcome to Trades" class="app-topbar-logo">
                 <span class="app-topbar-title">Welcome to Trades</span>
             </a>
+            {% include '_mobile_account_link.html' %}
+            <div class="app-topbar-actions">
+                <a href="{{ url_for('login') }}" class="btn btn-outline">Sign in</a>
+            </div>
         </div>
     </header>
 

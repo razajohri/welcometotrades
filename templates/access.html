@@ -83,6 +83,25 @@
                 max(20px, env(safe-area-inset-left));
         }
 
+        .access-top-signin {
+            position: absolute;
+            top: max(12px, env(safe-area-inset-top));
+            right: max(12px, env(safe-area-inset-right));
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 44px;
+            padding: 8px 14px;
+            border: 1.5px solid rgba(255, 255, 255, 0.5);
+            border-radius: 999px;
+            background: rgba(0, 0, 0, 0.28);
+            color: #fff;
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-decoration: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
         .access-top {
             width: 100%;
             max-width: 720px;
@@ -251,6 +270,20 @@
             opacity: 0.9;
         }
 
+        .access-signin {
+            margin: 4px 0 0;
+            font-size: 0.9375rem;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .access-signin a {
+            color: #fff;
+            font-weight: 700;
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+
         @media (max-width: 540px) {
             .access-hero {
                 padding:
@@ -364,6 +397,7 @@
     </div>
 
     <main class="access-hero">
+        <a href="{{ url_for('login') }}" class="access-top-signin">Sign in</a>
         <div class="access-top">
             <div class="access-rating" aria-label="Rated 4.75 out of 5 stars">
                 <div class="access-stars" aria-hidden="true">★★★★★</div>
@@ -402,6 +436,10 @@
             <p class="access-legal">
                 By proceeding you agree to our
                 <a href="{{ url_for('privacy') }}">privacy policy</a>.
+            </p>
+            <p class="access-signin">
+                Already have access?
+                <a href="{{ url_for('login') }}">Sign in</a>
             </p>
         </div>
     </main>
