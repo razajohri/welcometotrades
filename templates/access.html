@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>{{ seo_title }}</title>
+    <link rel="preload" as="image" type="image/webp" href="{{ url_for('static', filename='access-bg-sm.webp') }}?v=bg1" fetchpriority="high" media="(max-width: 700px)">
+    <link rel="preload" as="image" type="image/webp" href="{{ url_for('static', filename='access-bg.webp') }}?v=bg1" fetchpriority="high" media="(min-width: 701px)">
     {% include '_seo_head.html' %}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}?v=brand1">
     <style>
         *, *::before, *::after { box-sizing: border-box; }
 
@@ -32,7 +33,16 @@
             inset: 0;
             z-index: 0;
             pointer-events: none;
-            background: url('/static/access-bg.jpg') center 38% / cover no-repeat;
+            background: #15182c;
+        }
+
+        .access-bg img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 38%;
         }
 
         .access-bg::after {
@@ -334,7 +344,13 @@
     </style>
 </head>
 <body>
-    <div class="access-bg" aria-hidden="true"></div>
+    <div class="access-bg" aria-hidden="true">
+        <picture>
+            <source media="(max-width: 700px)" srcset="{{ url_for('static', filename='access-bg-sm.webp') }}?v=bg1" type="image/webp">
+            <source srcset="{{ url_for('static', filename='access-bg.webp') }}?v=bg1" type="image/webp">
+            <img src="{{ url_for('static', filename='access-bg.jpg') }}" alt="" width="1024" height="682" decoding="async" fetchpriority="high">
+        </picture>
+    </div>
 
     <main class="access-hero">
         <div class="access-top">

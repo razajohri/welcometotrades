@@ -94,6 +94,7 @@ app = Flask(__name__)
 app.register_blueprint(landing_search_bp)
 app.register_blueprint(contact_bp)
 app.secret_key = _resolve_flask_secret_key()
+app.config["SEND_FILE_MAX_AGE_DEFAULT"] = int(os.getenv("STATIC_CACHE_SECONDS", str(7 * 24 * 60 * 60)))
 
 SESSION_DAYS = max(int(os.getenv("SESSION_DAYS", "30")), 1)
 SESSION_LIFETIME = timedelta(days=SESSION_DAYS)
@@ -154,6 +155,15 @@ def enforce_canonical_host():
 
 @app.after_request
 def add_security_headers(response):
+    path = request.path or ""
+    if path.startswith("/static/") or path in {"/favicon.ico", "/robots.txt", "/sitemap.xml"}:
+        if path.startswith("/static/") and any(
+            path.endswith(ext) for ext in (".webp", ".png", ".jpg", ".jpeg", ".svg", ".ico", ".css", ".js")
+        ):
+            response.headers["Cache-Control"] = "public, max-age=604800"
+        else:
+            response.headers.setdefault("Cache-Control", "public, max-age=3600")
+
     if not IS_PRODUCTION:
         return response
 
