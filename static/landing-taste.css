@@ -1451,10 +1451,6 @@ img { max-width: 100%; height: auto; }
         gap: 8px;
     }
 
-    #search-results-demo .job-demo-card:nth-child(n+2) {
-        display: none;
-    }
-
     #search-results-demo .job-demo-card,
     #search-results-demo .job-demo-card:nth-child(3) {
         flex-direction: row;
