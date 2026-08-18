@@ -280,6 +280,11 @@ def _stripe_checkout_mode(price_id: str) -> str:
 
 
 def _start_stripe_checkout(selected_plan: dict[str, Any], *, user_id: str, email: str):
+    if user_has_active_subscription(user_id):
+        if current_user.is_authenticated:
+            return redirect(url_for("index"))
+        return redirect_existing_subscriber_to_login(email)
+
     price_id = selected_plan["price_id"]
     mode = _stripe_checkout_mode(price_id)
     session_kwargs: dict[str, Any] = {
@@ -547,6 +552,26 @@ def checkout_email() -> str | None:
     return session.get("checkout_email")
 
 
+def email_has_active_access(email: str | None) -> bool:
+    if not email or not is_supabase_database_configured():
+        return False
+    profile = get_profile_by_email(email)
+    if not profile:
+        return False
+    return user_has_active_subscription(profile["id"])
+
+
+def redirect_existing_subscriber_to_login(email: str):
+    session.pop("pending_plan", None)
+    return redirect(
+        url_for(
+            "login",
+            email=email,
+            message="You already have access. Sign in with this email to open jobs.",
+        )
+    )
+
+
 def can_view_subscribe() -> bool:
     return current_user.is_authenticated or bool(session.get("checkout_email"))
 
@@ -628,10 +653,13 @@ def subscribe():
     if current_user.is_authenticated and is_subscribed():
         return redirect(url_for("index"))
 
+    email = checkout_email()
+    if email and email_has_active_access(email) and not current_user.is_authenticated:
+        return redirect_existing_subscriber_to_login(email)
+
     error = None
     message = request.args.get("message")
     selected_plan = get_plan(request.form.get("plan") if request.method == "POST" else request.args.get("plan"))
-    email = checkout_email()
 
     if request.method == "POST":
         if not selected_plan:
@@ -903,6 +931,9 @@ def access():
         email = request.form.get("email", "").strip().lower()
         if not is_valid_email(email):
             error = "Please enter a valid email address."
+        elif email_has_active_access(email):
+            session["checkout_email"] = email
+            return redirect_existing_subscriber_to_login(email)
         else:
             session["checkout_email"] = email
             return redirect(url_for("subscribe"))
