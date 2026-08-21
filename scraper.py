@@ -1,8 +1,8 @@
 """Scrape USA + Canada on-site mining and trades jobs.
 
-Primary volume comes from Indeed + Google Jobs (public job boards).
+Primary volume comes from Indeed + ZipRecruiter + Google Jobs.
 SaaS ATS boards are skipped by default — enable with SCRAPE_ATS=1 once mining
-company lists are configured.
+company lists are configured in config/ats_companies.json.
 """
 
 from __future__ import annotations
@@ -22,7 +22,7 @@ from ats_companies import patch_jobspy_company_lists  # noqa: E402
 from ats_location import is_trades_job_row  # noqa: E402
 from jobspy import scrape_jobs  # noqa: E402
 
-# Core roles from product handoff + high-volume synonyms for Indeed coverage.
+# Core roles from product handoff + high-volume synonyms for board coverage.
 TRADE_SEARCH_TERMS = (
     "Haul Truck Operator",
     "Mine Haul Truck",
@@ -33,13 +33,17 @@ TRADE_SEARCH_TERMS = (
     "Excavator Operator",
     "Loader Operator",
     "Wheel Loader Operator",
+    "Open Pit Operator",
+    "Surface Miner",
     "Underground Operator",
     "Underground Miner",
     "Underground Mining",
+    "Shaft Miner",
     "Mine Operator",
     "Mining Operator",
     "Mill Operator",
     "Process Plant Operator",
+    "Process Operator Mining",
     "Plant Operator Mining",
     "Crusher Operator",
     "Conveyor Operator",
@@ -55,22 +59,35 @@ TRADE_SEARCH_TERMS = (
     "Construction Helper Mining",
     "Heavy Duty Mechanic",
     "Heavy Equipment Mechanic",
+    "Mobile Equipment Mechanic",
+    "Field Mechanic Mining",
     "Mine Mechanic",
+    "Maintenance Mechanic Mining",
     "Millwright",
     "Industrial Millwright",
     "Mine Electrician",
     "Underground Electrician",
     "Underground Maintenance Electrician",
     "Industrial Electrician Mining",
+    "Instrumentation Technician Mining",
     "Welder Mining",
     "Structural Welder",
+    "Boilermaker Mining",
+    "Pipefitter Mining",
+    "Ironworker Mining",
+    "Rigger Mining",
     "Assayer",
     "Safety Technician Mining",
     "Mine Safety",
     "Mine Geologist",
     "Mining Geologist",
     "FIFO Mining",
+    "Fly In Fly Out Mining",
     "Camp Mining Jobs",
+    # French-Canadian / Quebec volume
+    "Opérateur camion minier",
+    "Mineur souterrain",
+    "Mécanicien équipements lourds",
 )
 
 ATS_SEARCH_TERMS = (
@@ -96,28 +113,38 @@ INDEED_COUNTRIES = (
 INDEED_HUB_LOCATIONS = (
     ("Canada", "Timmins, ON"),
     ("Canada", "Sudbury, ON"),
+    ("Canada", "Kirkland Lake, ON"),
     ("Canada", "Thunder Bay, ON"),
     ("Canada", "Red Lake, ON"),
     ("Canada", "Val-d'Or, QC"),
     ("Canada", "Rouyn-Noranda, QC"),
+    ("Canada", "Sept-Îles, QC"),
     ("Canada", "Fort McMurray, AB"),
     ("Canada", "Edmonton, AB"),
     ("Canada", "Calgary, AB"),
     ("Canada", "Saskatoon, SK"),
     ("Canada", "Thompson, MB"),
+    ("Canada", "Flin Flon, MB"),
     ("Canada", "Labrador City, NL"),
     ("Canada", "Yellowknife, NT"),
+    ("Canada", "Kamloops, BC"),
+    ("Canada", "Prince George, BC"),
+    ("Canada", "Williams Lake, BC"),
     ("USA", "Elko, NV"),
     ("USA", "Winnemucca, NV"),
+    ("USA", "Battle Mountain, NV"),
     ("USA", "Reno, NV"),
     ("USA", "Salt Lake City, UT"),
     ("USA", "Phoenix, AZ"),
     ("USA", "Tucson, AZ"),
+    ("USA", "Morenci, AZ"),
     ("USA", "Denver, CO"),
     ("USA", "Boise, ID"),
+    ("USA", "Coeur d'Alene, ID"),
     ("USA", "Spokane, WA"),
     ("USA", "Gillette, WY"),
     ("USA", "Casper, WY"),
+    ("USA", "Butte, MT"),
     ("USA", "Hibbing, MN"),
     ("USA", "Marquette, MI"),
     ("USA", "Fairbanks, AK"),
@@ -136,6 +163,8 @@ HUB_SEARCH_TERMS = (
     "Welder",
     "Mine Labourer",
     "Process Plant Operator",
+    "FIFO Mining",
+    "Boilermaker",
 )
 
 GOOGLE_QUERIES = (
@@ -161,15 +190,35 @@ GOOGLE_QUERIES = (
     "FIFO mining jobs Canada",
     "camp mining jobs Canada",
     "mill operator mining jobs",
+    "open pit mining jobs USA",
+    "boilermaker mining jobs Canada",
+    "pipefitter mining jobs Canada USA",
+    "mobile equipment mechanic mining jobs",
+    "fly in fly out mining jobs Canada",
+    "mining jobs Timmins Sudbury",
+    "mining jobs Elko Nevada",
 )
 
-# Aim ~10k after filter/dedupe: high per-query caps + many role/location combos.
+# Broad catch-alls — noisier raw results, title filter keeps niche roles.
+CATCHALL_SEARCH_TERMS = (
+    "mining jobs",
+    "underground mining",
+    "open pit mining",
+    "FIFO mining camp",
+    "heavy equipment mining",
+    "trades mining site",
+)
+
+# Aim ~10k+ after filter/dedupe: high per-query caps + many role/location combos.
 INDEED_RESULTS_PER_QUERY = int(os.getenv("INDEED_RESULTS_PER_QUERY", "800"))
 INDEED_HUB_RESULTS_PER_QUERY = int(os.getenv("INDEED_HUB_RESULTS_PER_QUERY", "200"))
+ZIP_RESULTS_PER_QUERY = int(os.getenv("ZIP_RESULTS_PER_QUERY", "400"))
 ATS_RESULTS_WANTED = int(os.getenv("ATS_RESULTS_WANTED", "500"))
 GOOGLE_RESULTS_WANTED = int(os.getenv("GOOGLE_RESULTS_WANTED", "300"))
 SCRAPE_ATS = os.getenv("SCRAPE_ATS", "").strip().lower() in {"1", "true", "yes"}
 SCRAPE_HUBS = os.getenv("SCRAPE_HUBS", "1").strip().lower() not in {"0", "false", "no"}
+SCRAPE_ZIPRECRUITER = os.getenv("SCRAPE_ZIPRECRUITER", "").strip().lower() in {"1", "true", "yes"}
+SCRAPE_CATCHALL = os.getenv("SCRAPE_CATCHALL", "1").strip().lower() not in {"0", "false", "no"}
 
 
 def _dedupe_jobs(df: pd.DataFrame) -> pd.DataFrame:
@@ -264,6 +313,35 @@ def scrape_indeed_country() -> pd.DataFrame:
     return pd.concat(frames, ignore_index=True)
 
 
+def scrape_indeed_catchall() -> pd.DataFrame:
+    frames: list[pd.DataFrame] = []
+    total = len(CATCHALL_SEARCH_TERMS) * len(INDEED_COUNTRIES)
+    i = 0
+    for country, location in INDEED_COUNTRIES:
+        for term in CATCHALL_SEARCH_TERMS:
+            i += 1
+            print(f"Indeed catch-all {i}/{total}: {term} @ {country}")
+            try:
+                df = scrape_jobs(
+                    site_name=["indeed"],
+                    search_term=term,
+                    is_remote=False,
+                    country_indeed=country,
+                    location=location,
+                    results_wanted=INDEED_RESULTS_PER_QUERY,
+                    linkedin_fetch_description=False,
+                )
+            except Exception as exc:
+                print(f"  skipped ({exc})")
+                continue
+            if df is not None and not df.empty:
+                print(f"  -> {len(df)} jobs")
+                frames.append(df)
+    if not frames:
+        return pd.DataFrame()
+    return pd.concat(frames, ignore_index=True)
+
+
 def scrape_indeed_hubs() -> pd.DataFrame:
     frames: list[pd.DataFrame] = []
     total = len(INDEED_HUB_LOCATIONS) * len(HUB_SEARCH_TERMS)
@@ -280,6 +358,59 @@ def scrape_indeed_hubs() -> pd.DataFrame:
                     country_indeed=country,
                     location=location,
                     results_wanted=INDEED_HUB_RESULTS_PER_QUERY,
+                    linkedin_fetch_description=False,
+                )
+            except Exception as exc:
+                print(f"  skipped ({exc})")
+                continue
+            if df is not None and not df.empty:
+                print(f"  -> {len(df)} jobs")
+                frames.append(df)
+    if not frames:
+        return pd.DataFrame()
+    return pd.concat(frames, ignore_index=True)
+
+
+def scrape_ziprecruiter() -> pd.DataFrame:
+    """ZipRecruiter is strongest for US skilled trades / equipment roles."""
+    frames: list[pd.DataFrame] = []
+    # Prefer US + a Canada sweep; ZipRecruiter inventory is US-heavy.
+    locations = (
+        ("USA", "United States"),
+        ("Canada", "Canada"),
+    )
+    terms = HUB_SEARCH_TERMS + (
+        "Haul Truck Operator",
+        "Underground Miner",
+        "Heavy Equipment Mechanic",
+        "Mine Electrician",
+        "Process Plant Operator",
+        "Mine Labourer",
+    )
+    # Dedupe while preserving order
+    seen: set[str] = set()
+    unique_terms: list[str] = []
+    for term in terms:
+        key = term.lower()
+        if key in seen:
+            continue
+        seen.add(key)
+        unique_terms.append(term)
+
+    total = len(unique_terms) * len(locations)
+    i = 0
+    for country, location in locations:
+        for term in unique_terms:
+            i += 1
+            print(f"ZipRecruiter {i}/{total}: {term} @ {location} ({country})")
+            try:
+                df = scrape_jobs(
+                    site_name=["zip_recruiter"],
+                    search_term=term,
+                    is_remote=False,
+                    country_indeed=country,
+                    location=location,
+                    results_wanted=ZIP_RESULTS_PER_QUERY,
                     linkedin_fetch_description=False,
                 )
             except Exception as exc:
@@ -325,9 +456,19 @@ def scrape_all(keyword: str = "mining") -> pd.DataFrame:
     print("=== Indeed country-wide sweep ===")
     parts.append(scrape_indeed_country())
 
+    if SCRAPE_CATCHALL:
+        print("=== Indeed catch-all mining sweep ===")
+        parts.append(scrape_indeed_catchall())
+
     if SCRAPE_HUBS:
         print("=== Indeed mining-hub sweep ===")
         parts.append(scrape_indeed_hubs())
+
+    if SCRAPE_ZIPRECRUITER:
+        print("=== ZipRecruiter ===")
+        parts.append(scrape_ziprecruiter())
+    else:
+        print("Skipping ZipRecruiter (set SCRAPE_ZIPRECRUITER=1 to enable).")
 
     print("=== Google Jobs ===")
     parts.append(scrape_google())

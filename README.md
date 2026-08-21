@@ -22,6 +22,8 @@ python app.py
 python scripts/update_jobs_cache.py
 ```
 
+On Railway, deploy a second service from `railway.job-scrape.toml` (weekly cron) with the same Supabase env vars as the web app. That runs the expanded Indeed + Google mining/trades sweep and upserts into `public.jobs`.
+
 ## Deploy
 
 Use a **new** Railway project, **new** Supabase, and point Namecheap DNS for `welcometotrades.com` here.

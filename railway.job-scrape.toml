@@ -1,0 +1,14 @@
+[build]
+builder = "nixpacks"
+
+[deploy]
+startCommand = "python scripts/update_jobs_cache.py"
+cronSchedule = "0 6 * * 1"
+restartPolicyType = "never"
+
+[environments.production.variables]
+FLASK_ENV = "production"
+SCRAPE_CATCHALL = "1"
+SCRAPE_HUBS = "1"
+# ZipRecruiter often 403s without residential proxies — leave off unless proxies are configured.
+SCRAPE_ZIPRECRUITER = "0"

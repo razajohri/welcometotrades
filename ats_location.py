@@ -8,16 +8,22 @@ from typing import Any
 TRADE_ROLE_TERMS: tuple[str, ...] = (
     "haul truck", "haul truck operator", "mine equipment", "equipment operator",
     "dozer operator", "dozer", "grader operator", "grader", "excavator operator",
-    "excavator", "loader operator", "loader", "underground operator",
-    "underground miner", "underground mine", "mine operator", "mill operator",
-    "process plant", "plant operator", "crusher operator", "crusher",
-    "conveyor operator", "conveyor", "driller", "drill operator", "jumbo operator",
-    "jumbo", "blast operator", "blaster", "blasting", "mine laborer", "mine labourer",
-    "general laborer", "general labourer", "utility worker", "construction miner",
-    "construction helper", "heavy duty mechanic", "heavy-duty mechanic", "hd mechanic",
+    "excavator", "loader operator", "loader", "open pit", "surface miner",
+    "underground operator", "underground miner", "underground mine", "shaft miner",
+    "mine operator", "mill operator", "process plant", "process operator",
+    "plant operator", "crusher operator", "crusher", "conveyor operator", "conveyor",
+    "driller", "drill operator", "jumbo operator", "jumbo", "blast operator",
+    "blaster", "blasting", "mine laborer", "mine labourer", "general laborer",
+    "general labourer", "utility worker", "construction miner", "construction helper",
+    "heavy duty mechanic", "heavy-duty mechanic", "hd mechanic",
+    "mobile equipment mechanic", "field mechanic", "maintenance mechanic",
     "millwright", "electrician", "underground electrician", "maintenance electrician",
-    "welder", "welding", "assayer", "assay", "safety technician", "safety tech",
+    "instrumentation technician", "welder", "welding", "boilermaker", "pipefitter",
+    "ironworker", "rigger", "assayer", "assay", "safety technician", "safety tech",
     "mine geologist", "mining geologist", "geologist", "mechanic", "miner", "mining",
+    "fifo", "fly-in", "fly in fly out", "camp job",
+    # French-Canadian title fragments
+    "opérateur", "operateur", "mineur", "mécanicien", "mecanicien",
 )
 
 REMOTE_ONLY_MARKERS = (
