@@ -15,7 +15,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="preload" as="image" href="{{ url_for('static', filename='logo-ui.png') }}?v=wtt8" type="image/png">
-    <link rel="stylesheet" href="{{ url_for('static', filename='landing-taste.css') }}?v=ioshero6">
+    <link rel="preload" as="image" type="image/webp" href="{{ url_for('static', filename='hero-mine-sm.webp') }}?v=hero2" fetchpriority="high" media="(max-width: 700px)">
+    <link rel="preload" as="image" type="image/webp" href="{{ url_for('static', filename='hero-mine.webp') }}?v=hero2" fetchpriority="high" media="(min-width: 701px)">
+    <link rel="stylesheet" href="{{ url_for('static', filename='landing-taste.css') }}?v=ioshero7">
     <link rel="stylesheet" href="{{ url_for('static', filename='contact_form.css') }}?v=ioshero1">
     {% if recaptcha_enabled and recaptcha_site_key %}
     <script src="https://www.google.com/recaptcha/api.js?render={{ recaptcha_site_key }}" async defer></script>
@@ -46,7 +48,11 @@
     </div>
     <div class="hero">
         <div class="hero-media" aria-hidden="true">
-            <img src="{{ url_for('static', filename='hero-mine.jpg') }}" alt="" width="1600" height="900" decoding="async" fetchpriority="high">
+            <picture>
+                <source media="(max-width: 700px)" srcset="{{ url_for('static', filename='hero-mine-sm.webp') }}?v=hero2" type="image/webp">
+                <source srcset="{{ url_for('static', filename='hero-mine.webp') }}?v=hero2" type="image/webp">
+                <img src="{{ url_for('static', filename='hero-mine.jpg') }}?v=hero2" alt="" width="1600" height="900" decoding="async" fetchpriority="high">
+            </picture>
         </div>
         <div class="hero-inner">
         <div class="header">
@@ -309,6 +315,14 @@
             triggerSearch();
             updateHeroShift();
         });
+        // If the server skipped job cards (to keep TTFB low), fill them after paint.
+        {% if not landing_preview_jobs %}
+        if ('requestIdleCallback' in window) {
+            requestIdleCallback(function() { loadDefaultPreview(); }, { timeout: 1500 });
+        } else {
+            setTimeout(loadDefaultPreview, 200);
+        }
+        {% endif %}
         // shift hero up when user is interacting with search
         const heroEl = document.querySelector('.hero');
         function updateHeroShift() {

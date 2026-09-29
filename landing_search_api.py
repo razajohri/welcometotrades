@@ -11,9 +11,11 @@ from data_store import (
     is_supabase_database_configured,
     job_to_landing_preview,
     kickoff_job_search_cache_warm,
+    kickoff_landing_preview_warm,
     preview_jobs,
     preview_jobs_default_landing,
 )
+
 
 bp = Blueprint("landing_search", __name__)
 
@@ -56,15 +58,19 @@ def preview_jobs_default_from_cache() -> list[dict]:
 
 
 def get_default_landing_preview() -> list[dict]:
-    """Default job cards for the homepage (server-rendered for SEO)."""
+    """Homepage cards without blocking on Supabase (memory / job cache / pickle only)."""
+    kickoff_job_search_cache_warm()
+    kickoff_landing_preview_warm()
     try:
-        if is_supabase_database_configured():
-            results = preview_jobs_default_landing()
-            if results:
-                return results
+        results = preview_jobs_default_landing(allow_network=False)
+        if results:
+            return results
         return preview_jobs_default_from_cache()
     except Exception:
-        return preview_jobs_default_from_cache()
+        try:
+            return preview_jobs_default_from_cache()
+        except Exception:
+            return []
 
 
 @bp.route("/landing-search", methods=["POST"])
@@ -90,10 +96,9 @@ def landing_search():
 def landing_search_default():
     kickoff_job_search_cache_warm()
     try:
-        if is_supabase_database_configured():
-            results = preview_jobs_default_landing()
-            if results:
-                return {"results": results}
+        results = preview_jobs_default_landing(allow_network=True)
+        if results:
+            return {"results": results}
         return {"results": preview_jobs_default_from_cache()}
     except Exception:
         return {"results": preview_jobs_default_from_cache()}

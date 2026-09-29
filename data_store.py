@@ -40,11 +40,16 @@ JOB_SEARCH_COLUMNS = (
     "title, company, compensation, job_url_direct, job_url, site, date_posted, location, is_remote, description"
 )
 JOB_CACHE_TTL_SECONDS = int(os.getenv("JOB_CACHE_TTL_SECONDS", "900"))
+LANDING_PREVIEW_TTL_SECONDS = int(os.getenv("LANDING_PREVIEW_TTL_SECONDS", "600"))
 
 _job_search_cache: dict[str, Any] = {"rows": [], "loaded_at": 0.0}
 _job_search_cache_lock = threading.Lock()
 _cache_warm_cond = threading.Condition(_job_search_cache_lock)
 _cache_warm_in_progress = False
+
+_landing_preview_cache: dict[str, Any] = {"results": [], "loaded_at": 0.0}
+_landing_preview_lock = threading.Lock()
+_landing_preview_warm_in_progress = False
 
 # Category buttons map to title keywords (jobs rarely contain the category label itself).
 CATEGORY_FILTER_TERMS: dict[str, list[str]] = {
@@ -810,8 +815,100 @@ def kickoff_job_search_cache_warm() -> None:
 
 
 def warm_jobs_search_cache() -> int:
-    """Preload Canada job listings into memory. Returns number of cached rows."""
-    return len(_get_cached_eligible_jobs(force_refresh=True))
+    """Preload listed job listings into memory. Returns number of cached rows."""
+    count = len(_get_cached_eligible_jobs(force_refresh=True))
+    try:
+        warm_landing_preview_cache(force_refresh=True)
+    except Exception:
+        pass
+    return count
+
+
+def _landing_preview_cache_is_warm_unlocked() -> bool:
+    results = _landing_preview_cache["results"]
+    loaded_at = _landing_preview_cache["loaded_at"]
+    return bool(results) and time.time() - loaded_at < LANDING_PREVIEW_TTL_SECONDS
+
+
+def get_cached_landing_preview() -> list[dict[str, Any]]:
+    """Return in-memory landing cards if still fresh (no network)."""
+    with _landing_preview_lock:
+        if _landing_preview_cache_is_warm_unlocked():
+            return list(_landing_preview_cache["results"])
+        # Serve briefly-stale cards while a refresh runs (up to 3x TTL).
+        results = _landing_preview_cache["results"]
+        loaded_at = _landing_preview_cache["loaded_at"]
+        if results and time.time() - loaded_at < LANDING_PREVIEW_TTL_SECONDS * 3:
+            return list(results)
+    return []
+
+
+def landing_preview_cache_is_warm() -> bool:
+    with _landing_preview_lock:
+        return _landing_preview_cache_is_warm_unlocked()
+
+
+def _store_landing_preview(results: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    if not results:
+        return []
+    with _landing_preview_lock:
+        _landing_preview_cache["results"] = list(results)
+        _landing_preview_cache["loaded_at"] = time.time()
+    return list(results)
+
+
+def _build_landing_preview_from_job_cache() -> list[dict[str, Any]]:
+    """Build homepage cards from the warm in-memory job list (no Supabase)."""
+    if not _job_search_cache_is_warm():
+        return []
+    rows = _get_cached_eligible_jobs()
+    results: list[dict[str, Any]] = []
+    for category in DEFAULT_LANDING_PREVIEW_CATEGORIES:
+        picked = _pick_best_landing_preview_row(rows[:400], category)
+        if picked is None:
+            # Wider scan if category is rare in the first slice.
+            picked = _pick_best_landing_preview_row(rows, category)
+        if picked:
+            results.append(job_to_landing_preview(picked, category=category))
+    return results
+
+
+def warm_landing_preview_cache(*, force_refresh: bool = False) -> list[dict[str, Any]]:
+    """Refresh homepage job cards into memory. Prefer local job cache, else Supabase."""
+    global _landing_preview_warm_in_progress
+
+    with _landing_preview_lock:
+        if not force_refresh and _landing_preview_cache_is_warm_unlocked():
+            return list(_landing_preview_cache["results"])
+        if _landing_preview_warm_in_progress and not force_refresh:
+            return list(_landing_preview_cache["results"])
+        _landing_preview_warm_in_progress = True
+
+    try:
+        results = _build_landing_preview_from_job_cache()
+        if not results and is_supabase_database_configured():
+            results = _fetch_landing_preview_from_supabase()
+        if results:
+            return _store_landing_preview(results)
+        return []
+    finally:
+        with _landing_preview_lock:
+            _landing_preview_warm_in_progress = False
+
+
+def kickoff_landing_preview_warm() -> None:
+    """Refresh landing cards in the background without blocking the request."""
+    with _landing_preview_lock:
+        if _landing_preview_cache_is_warm_unlocked() or _landing_preview_warm_in_progress:
+            return
+
+    def _run() -> None:
+        try:
+            warm_landing_preview_cache(force_refresh=True)
+        except Exception:
+            pass
+
+    threading.Thread(target=_run, daemon=True, name="landing-preview-warm").start()
 
 
 def _get_cached_eligible_jobs(*, force_refresh: bool = False) -> list[dict[str, Any]]:
@@ -1081,19 +1178,39 @@ def _fetch_one_listed_job_for_category(category: str) -> dict[str, Any] | None:
     return best_any
 
 
-def preview_jobs_default_landing() -> list[dict[str, Any]]:
+def _fetch_landing_preview_from_supabase() -> list[dict[str, Any]]:
     results: list[dict[str, Any]] = []
     for category in DEFAULT_LANDING_PREVIEW_CATEGORIES:
-        job: dict[str, Any] | None = None
-        if is_supabase_database_configured():
-            job = _fetch_one_listed_job_for_category(category)
+        job = _fetch_one_listed_job_for_category(category)
         if job is None:
-            cached = _fetch_all_listed_jobs("", category, columns=JOB_SEARCH_COLUMNS)
-            if cached:
-                job = _pick_best_landing_preview_row(cached[:25], category) or dict(cached[0])
-        if job:
-            results.append(job_to_landing_preview(job, category=category))
+            continue
+        results.append(job_to_landing_preview(job, category=category))
     return results
+
+
+def preview_jobs_default_landing(*, allow_network: bool = True) -> list[dict[str, Any]]:
+    """Homepage Explore-jobs cards. Memory-first; optional Supabase only when needed."""
+    cached = get_cached_landing_preview()
+    if cached:
+        if not landing_preview_cache_is_warm():
+            kickoff_landing_preview_warm()
+        return cached
+
+    from_job_cache = _build_landing_preview_from_job_cache()
+    if from_job_cache:
+        return _store_landing_preview(from_job_cache)
+
+    if not allow_network:
+        kickoff_landing_preview_warm()
+        return []
+
+    if is_supabase_database_configured():
+        results = _fetch_landing_preview_from_supabase()
+        if results:
+            return _store_landing_preview(results)
+
+    kickoff_landing_preview_warm()
+    return []
 
 
 def preview_jobs(keyword: str, filter_value: str, limit: int = 3, city: str = "") -> tuple[list[dict[str, Any]], int]:
