@@ -36,11 +36,13 @@ ACTIVE_SUBSCRIPTION_STATUSES = {"active", "trialing", "lifetime"}
 LISTED_JOB_SITES = ("ashby", "greenhouse", "lever", "hiringcafe", "indeed", "google")
 TRUSTED_JOB_SITES = LISTED_JOB_SITES  # backwards compat
 
+# Lean columns for the in-memory search cache. Full descriptions are huge and
+# dominate Supabase egress when we refresh ~10k rows; search UI does not need them.
 JOB_SEARCH_COLUMNS = (
-    "title, company, compensation, job_url_direct, job_url, site, date_posted, location, is_remote, description"
+    "title, company, compensation, job_url_direct, job_url, site, date_posted, location, is_remote"
 )
-JOB_CACHE_TTL_SECONDS = int(os.getenv("JOB_CACHE_TTL_SECONDS", "900"))
-LANDING_PREVIEW_TTL_SECONDS = int(os.getenv("LANDING_PREVIEW_TTL_SECONDS", "600"))
+JOB_CACHE_TTL_SECONDS = int(os.getenv("JOB_CACHE_TTL_SECONDS", "3600"))
+LANDING_PREVIEW_TTL_SECONDS = int(os.getenv("LANDING_PREVIEW_TTL_SECONDS", "1800"))
 
 _job_search_cache: dict[str, Any] = {"rows": [], "loaded_at": 0.0}
 _job_search_cache_lock = threading.Lock()
@@ -779,6 +781,9 @@ def invalidate_jobs_search_cache() -> None:
     with _job_search_cache_lock:
         _job_search_cache["rows"] = []
         _job_search_cache["loaded_at"] = 0.0
+    with _landing_preview_lock:
+        _landing_preview_cache["results"] = []
+        _landing_preview_cache["loaded_at"] = 0.0
 
 
 def _job_search_cache_is_warm_unlocked() -> bool:
@@ -1036,7 +1041,7 @@ def search_jobs(
 DEFAULT_LANDING_PREVIEW_CATEGORIES: tuple[str, ...] = ("Operators", "Underground", "Trades")
 
 _LANDING_PREVIEW_COLUMNS = (
-    "title, company, compensation, description, raw_payload, location, site, date_posted, is_remote, "
+    "title, company, compensation, location, site, date_posted, is_remote, "
     "min_amount, max_amount, currency, interval"
 )
 
@@ -1162,20 +1167,8 @@ def _fetch_one_listed_job_for_category(category: str) -> dict[str, Any] | None:
             query = query.eq("is_active", True)
         return _apply_title_filters_to_query(query, "", category)
 
-    best_any: dict[str, Any] | None = None
-    for require_description in (True, False):
-        query = _base_query()
-        if require_description:
-            query = query.not_.is_("description", "null").neq("description", "")
-        response = query.order("date_posted", desc=True).limit(50).execute()
-        picked = _pick_best_landing_preview_row(_response_rows(response), category)
-        if picked is None:
-            continue
-        if _landing_preview_richness(picked) > 0:
-            return picked
-        if best_any is None:
-            best_any = picked
-    return best_any
+    response = _base_query().order("date_posted", desc=True).limit(25).execute()
+    return _pick_best_landing_preview_row(_response_rows(response), category)
 
 
 def _fetch_landing_preview_from_supabase() -> list[dict[str, Any]]:
