@@ -1,4 +1,4 @@
-"""Scrape USA + Canada on-site mining and trades jobs.
+"""Scrape USA + Canada on-site mining, trades, and data centre construction jobs.
 
 Primary volume comes from Indeed + ZipRecruiter + Google Jobs.
 SaaS ATS boards are skipped by default — enable with SCRAPE_ATS=1 once mining
@@ -88,6 +88,48 @@ TRADE_SEARCH_TERMS = (
     "Opérateur camion minier",
     "Mineur souterrain",
     "Mécanicien équipements lourds",
+    # Data centre construction & critical facilities trades
+    "Data Center Construction",
+    "Data Centre Construction",
+    "Data Center Electrician",
+    "Data Centre Electrician",
+    "Data Center HVAC",
+    "Data Centre HVAC",
+    "Critical Facilities Technician",
+    "Critical Facilities Engineer",
+    "Data Center Commissioning",
+    "Data Centre Commissioning",
+    "UPS Technician Data Center",
+    "Generator Technician Data Center",
+    "Switchgear Technician",
+    "High Voltage Electrician Data Center",
+    "Powerline Technician",
+    "Substation Technician",
+    "Crane Operator Construction",
+    "Tower Crane Operator",
+    "Mobile Crane Operator",
+    "Ironworker Structural Steel",
+    "Pipefitter Data Center",
+    "Steamfitter Construction",
+    "Sprinkler Fitter",
+    "Sheet Metal Worker HVAC",
+    "Chiller Technician",
+    "Cooling Tower Technician",
+    "Fibre Optic Technician",
+    "Fiber Optic Technician",
+    "Structured Cabling Installer",
+    "Server Rack Installation",
+    "Fire Alarm Technician",
+    "Building Automation Technician",
+    "Instrumentation Controls Technician",
+    "Heavy Equipment Operator Construction",
+    "Concrete Finisher Construction",
+    "Site Superintendent Construction",
+    "Millwright Data Center",
+    "Electrical Commissioning Engineer",
+    "Mechanical Commissioning",
+    "Load Bank Testing",
+    "Liquid Cooling Data Center",
 )
 
 ATS_SEARCH_TERMS = (
@@ -101,6 +143,11 @@ ATS_SEARCH_TERMS = (
     "welder",
     "blaster",
     "mine geologist",
+    "data center",
+    "data centre",
+    "critical facilities",
+    "crane operator",
+    "commissioning",
 )
 
 # Country-level sweeps (main volume).
@@ -149,6 +196,20 @@ INDEED_HUB_LOCATIONS = (
     ("USA", "Marquette, MI"),
     ("USA", "Fairbanks, AK"),
     ("USA", "Anchorage, AK"),
+    # Data centre construction hubs
+    ("USA", "Ashburn, VA"),
+    ("USA", "Sterling, VA"),
+    ("USA", "Dallas, TX"),
+    ("USA", "Phoenix, AZ"),
+    ("USA", "Quincy, WA"),
+    ("USA", "Columbus, OH"),
+    ("USA", "Atlanta, GA"),
+    ("USA", "Chicago, IL"),
+    ("Canada", "Toronto, ON"),
+    ("Canada", "Markham, ON"),
+    ("Canada", "Montreal, QC"),
+    ("Canada", "Calgary, AB"),
+    ("Canada", "Vancouver, BC"),
 )
 
 # Shorter hub query set so regional sweeps stay fast but still fatten inventory.
@@ -165,6 +226,13 @@ HUB_SEARCH_TERMS = (
     "Process Plant Operator",
     "FIFO Mining",
     "Boilermaker",
+    "Data Center Electrician",
+    "Data Centre Construction",
+    "Critical Facilities",
+    "Crane Operator",
+    "HVAC Technician",
+    "Pipefitter",
+    "Commissioning",
 )
 
 GOOGLE_QUERIES = (
@@ -197,6 +265,18 @@ GOOGLE_QUERIES = (
     "fly in fly out mining jobs Canada",
     "mining jobs Timmins Sudbury",
     "mining jobs Elko Nevada",
+    "data center construction jobs USA",
+    "data centre construction jobs Canada",
+    "data center electrician jobs USA",
+    "data centre electrician jobs Canada",
+    "critical facilities technician jobs",
+    "data center HVAC jobs USA Canada",
+    "crane operator data center construction",
+    "UPS generator technician data center",
+    "commissioning engineer data center",
+    "fibre optic structured cabling data center",
+    "pipefitter steamfitter data center jobs",
+    "sprinkler fitter fire alarm construction jobs",
 )
 
 # Broad catch-alls — noisier raw results, title filter keeps niche roles.
@@ -207,6 +287,10 @@ CATCHALL_SEARCH_TERMS = (
     "FIFO mining camp",
     "heavy equipment mining",
     "trades mining site",
+    "data center construction",
+    "data centre construction",
+    "critical facilities trades",
+    "mission critical construction",
 )
 
 # Aim ~10k+ after filter/dedupe: high per-query caps + many role/location combos.

@@ -22,6 +22,30 @@ TRADE_ROLE_TERMS: tuple[str, ...] = (
     "ironworker", "rigger", "assayer", "assay", "safety technician", "safety tech",
     "mine geologist", "mining geologist", "geologist", "mechanic", "miner", "mining",
     "fifo", "fly-in", "fly in fly out", "camp job",
+    # Data centre / mission-critical construction & trades
+    "data center", "data centre", "datacenter", "datacentre", "critical facilities",
+    "mission critical", "mission-critical", "commissioning", "load bank",
+    "site superintendent", "civil construction", "structural steel", "steel erector",
+    "pipelayer", "pipe layer", "concrete finisher", "concrete form", "formworker",
+    "carpenter", "signalperson", "signal person", "crane operator", "tower crane",
+    "mobile crane", "crawler crane", "lift director", "lift planner", "heavy haul",
+    "lowbed", "telehandler", "forklift operator", "machinery mover",
+    "construction electrician", "industrial electrician", "high-voltage", "high voltage",
+    "powerline", "power line", "substation", "cable puller", "cable tray", "switchgear",
+    "transformer", "generator technician", "ups technician", "battery system",
+    "busway", "protection and control", "electrical testing", "grounding and bonding",
+    "hvac", "refrigeration", "steamfitter", "plumber", "sheet metal", "chiller",
+    "cooling tower", "pump technician", "compressor technician", "hydronic",
+    "liquid cooling", "water treatment", "mechanical insulator", "controls technician",
+    "building automation", "sprinkler fitter", "fire alarm", "fire suppression",
+    "firestop", "fibre optic", "fiber optic", "fibre-optic", "fiber-optic",
+    "structured cabling", "low-voltage", "low voltage", "access control", "cctv",
+    "server rack", "rack installation", "power quality", "ndt", "non-destructive",
+    "quality assurance inspector", "quality control inspector", "health and safety",
+    "bim coordinator", "field engineer", "quantity surveyor", "project controls",
+    "critical facilities engineer", "facility operations", "fireproofing",
+    "underground utilities", "industrial coatings", "prefabricated module",
+    "compactor operator", "dump truck", "rigging",
     # French-Canadian title fragments
     "opérateur", "operateur", "mineur", "mécanicien", "mecanicien",
 )
@@ -263,6 +287,33 @@ def is_trade_role_title(title: str) -> bool:
     return bool(text) and _contains_any(text, TRADE_ROLE_TERMS)
 
 
+# Desk/pro titles that are only kept when the listing is clearly data-centre / mission-critical.
+DATA_CENTRE_CONTEXT_TERMS: tuple[str, ...] = (
+    "data center", "data centre", "datacenter", "datacentre",
+    "critical facilities", "mission critical", "mission-critical",
+)
+
+DATA_CENTRE_PROFESSIONAL_TITLES: tuple[str, ...] = (
+    "project manager", "construction manager", "civil engineer", "structural engineer",
+    "electrical engineer", "mechanical engineer", "power systems", "geotechnical",
+    "architect", "surveyor", "controls engineer", "fire protection engineer",
+    "network engineer", "cost estimator", "procurement", "contract administrator",
+    "project scheduler", "logistics coordinator", "materials manager",
+    "reliability engineer", "maintenance planner", "bim", "cad designer",
+    "electrical designer", "field engineer", "quantity surveyor",
+)
+
+
+def is_data_centre_professional_role(title: str, combined: str) -> bool:
+    title_l = (title or "").lower()
+    text = (combined or "").lower()
+    if not title_l or not _contains_any(title_l, DATA_CENTRE_PROFESSIONAL_TITLES):
+        return False
+    return _contains_any(title_l, DATA_CENTRE_CONTEXT_TERMS) or _contains_any(
+        text, DATA_CENTRE_CONTEXT_TERMS
+    )
+
+
 def looks_remote_only(text: str, *, is_remote: bool | None = None) -> bool:
     lowered = (text or "").lower()
     if is_remote is True and not any(
@@ -323,7 +374,10 @@ def is_trades_job_row(
     desc = str(description or "")[:1500]
     combined = f"{title_s} {loc} {desc}".lower()
 
-    if not is_trade_role_title(title_s):
+    if not (
+        is_trade_role_title(title_s)
+        or is_data_centre_professional_role(title_s, combined)
+    ):
         return False
     if looks_remote_only(combined, is_remote=is_remote):
         return False

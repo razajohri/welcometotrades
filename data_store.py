@@ -57,7 +57,8 @@ _landing_preview_warm_in_progress = False
 CATEGORY_FILTER_TERMS: dict[str, list[str]] = {
     "Operators": [
         "haul truck", "equipment operator", "dozer", "grader", "excavator",
-        "loader", "mine operator", "mine equipment",
+        "loader", "mine operator", "mine equipment", "crane operator",
+        "telehandler", "forklift", "compactor", "dump truck", "heavy haul",
     ],
     "Underground": [
         "underground", "underground miner", "underground operator",
@@ -69,13 +70,23 @@ CATEGORY_FILTER_TERMS: dict[str, list[str]] = {
     ],
     "Trades": [
         "mechanic", "heavy duty", "millwright", "electrician", "welder", "welding",
+        "pipefitter", "steamfitter", "ironworker", "carpenter", "plumber",
+        "sheet metal", "hvac", "sprinkler", "boilermaker", "rigger",
+    ],
+    "Data Centre": [
+        "data center", "data centre", "datacenter", "datacentre",
+        "critical facilities", "mission critical", "commissioning",
+        "ups", "switchgear", "load bank", "liquid cooling", "server rack",
+        "structured cabling", "fibre optic", "fiber optic",
     ],
     "Labor": [
         "laborer", "labourer", "utility worker", "construction miner",
-        "construction helper", "helper",
+        "construction helper", "helper", "pipelayer", "concrete finisher",
+        "formworker",
     ],
     "Safety & Geology": [
         "safety technician", "safety tech", "geologist", "mine geologist",
+        "health and safety",
     ],
 }
 
